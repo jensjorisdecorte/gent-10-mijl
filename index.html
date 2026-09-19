@@ -21,7 +21,7 @@
 :root{
   --ground:#F2F4F6; --panel:#FFFFFF; --panel-2:#E9EDF1; --line:#D5DBE2;
   --ink:#161B20; --ink-2:#4B5563; --ink-3:#7B8794;
-  --em:#E4572E; --em-soft:#FBE3DA; --ch:#2F7FBF; --ch-soft:#DCEAF6;
+  --em:#E4572E; --em-soft:#FBE3DA; --ch:#2F7FBF; --ch-soft:#DCEAF6; --nh:#0E8C8C;
   --ok:#2E9E5B; --bad:#D14343; --warn:#C98A12; --warn-soft:#FBF1D9;
   --shadow:0 6px 24px rgba(16,24,32,.16);
   --map-filter:saturate(.18) contrast(.9) brightness(1.05);
@@ -31,7 +31,7 @@
   :root:not([data-theme="light"]){
     --ground:#0E1317; --panel:#171D23; --panel-2:#20272E; --line:#2C353E;
     --ink:#EDF1F4; --ink-2:#B5BEC8; --ink-3:#7E8994;
-    --em:#FF7A52; --em-soft:#3A2119; --ch:#5AA6E3; --ch-soft:#16293A;
+    --em:#FF7A52; --em-soft:#3A2119; --ch:#5AA6E3; --ch-soft:#16293A; --nh:#3FBFBF;
     --ok:#3FB86E; --bad:#E25C5C; --warn:#E0A32A; --warn-soft:#3A2E12;
     --shadow:0 6px 24px rgba(0,0,0,.5);
     --map-filter:invert(1) hue-rotate(180deg) saturate(.15) brightness(.78) contrast(.9);
@@ -40,7 +40,7 @@
 :root[data-theme="dark"]{
   --ground:#0E1317; --panel:#171D23; --panel-2:#20272E; --line:#2C353E;
   --ink:#EDF1F4; --ink-2:#B5BEC8; --ink-3:#7E8994;
-  --em:#FF7A52; --em-soft:#3A2119; --ch:#5AA6E3; --ch-soft:#16293A;
+  --em:#FF7A52; --em-soft:#3A2119; --ch:#5AA6E3; --ch-soft:#16293A; --nh:#3FBFBF;
   --ok:#3FB86E; --bad:#E25C5C; --warn:#E0A32A; --warn-soft:#3A2E12;
   --shadow:0 6px 24px rgba(0,0,0,.5);
   --map-filter:invert(1) hue-rotate(180deg) saturate(.15) brightness(.78) contrast(.9);
@@ -50,7 +50,7 @@
 html,body{height:100%;margin:0}
 body{
   background:var(--ground); color:var(--ink);
-  font-family:"Barlow", system-ui, -apple-system, "Segoe UI", sans-serif; font-size:15px; line-height:1.35;
+  font-family:"Barlow", system-ui, -apple-system, "Segoe UI", sans-serif; font-size:14px; line-height:1.35;
   overscroll-behavior:none; -webkit-tap-highlight-color:transparent;
 }
 button{font:inherit;color:inherit}
@@ -63,10 +63,10 @@ button{font:inherit;color:inherit}
   background:#161B20; color:#F5F7F9;
 }
 .bar .clock{
-  font-family:"Barlow Condensed","Arial Narrow",sans-serif; font-weight:700; font-size:28px; line-height:1;
+  font-family:"Barlow Condensed","Arial Narrow",sans-serif; font-weight:700; font-size:26px; line-height:1;
   font-variant-numeric:tabular-nums; letter-spacing:.01em; margin-left:auto; white-space:nowrap;
 }
-.bar .clock small{font-size:13px;font-weight:600;color:#AEB7C0;margin-right:6px;letter-spacing:.04em}
+.bar .clock small{font-size:12px;font-weight:600;color:#AEB7C0;margin-right:6px;letter-spacing:.04em}
 .live{display:flex;align-items:center;gap:6px;font-size:12px;color:#AEB7C0;white-space:nowrap;background:none;border:0;padding:0;cursor:pointer}
 .live i{width:8px;height:8px;border-radius:50%;background:#7B8794;display:inline-block}
 .live.ok i{background:#2E9E5B;box-shadow:0 0 0 3px rgba(46,158,91,.25)}
@@ -102,13 +102,15 @@ button{font:inherit;color:inherit}
 @media (prefers-reduced-motion: reduce){.rm.live .halo{animation:none}}
 .rm.up .tag{top:auto;bottom:100%;transform:translate(-50%,-4px)}
 .rm .tag{position:absolute;left:50%;top:100%;transform:translate(-50%,4px);white-space:nowrap;background:#161B20;color:#fff;font-size:11px;font-weight:600;padding:2px 6px;border-radius:6px}
+.rm.grp{width:40px;height:40px}
+.rm.grp .dot{background:var(--grad);font-size:11px;letter-spacing:.04em;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.rm.grp .halo{background:#161B20}
 .poi{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #161B20;font-size:11px;font-weight:700;color:#161B20;box-shadow:0 1px 4px rgba(0,0,0,.3)}
 .poi.mat{background:#161B20;color:#fff;width:26px;height:26px}
 .poi.aid{border-color:#2F7FBF;color:#2F7FBF}
 .poi.start{background:#2E9E5B;border-color:#2E9E5B;color:#fff}
 .poi.finish{background:repeating-conic-gradient(#161B20 0 25%,#fff 0 50%) 50%/8px 8px;color:transparent;border-color:#161B20}
 .kmm{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:11px;color:#fff;background:rgba(22,27,32,.7);padding:1px 5px;border-radius:4px;white-space:nowrap}
-.car{width:26px;height:26px;border-radius:7px;background:var(--c);color:#fff;display:grid;place-items:center;font-size:10px;font-weight:700;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35);opacity:.92}
 .me{width:18px;height:18px;border-radius:50%;background:#1E7BF0;border:3px solid #fff;box-shadow:0 0 0 6px rgba(30,123,240,.25)}
 .pin{
   width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#fff;border:2px solid #7B4DBE;
@@ -130,7 +132,7 @@ button{font:inherit;color:inherit}
 .strip::-webkit-scrollbar{display:none}
 .stop{
   flex:0 0 auto;border:1px solid var(--line);border-radius:999px;padding:5px 10px 5px 6px;background:var(--panel-2);
-  display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;cursor:pointer;color:var(--ink-2);
+  display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:500;cursor:pointer;color:var(--ink-2);
 }
 .stop i{width:18px;height:18px;border-radius:50%;background:var(--ink-3);color:#fff;display:grid;place-items:center;font-style:normal;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:12px}
 .stop b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
@@ -142,25 +144,27 @@ button{font:inherit;color:inherit}
 .now{border-radius:12px;background:var(--panel-2);padding:6px 10px;display:grid;gap:2px;border-left:5px solid #7B4DBE}
 .now .h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .now .h .auto{margin-left:auto}
-.now .h b{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:20px;line-height:1.1}
+.now .h b{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:19px;line-height:1.1}
 .now .h span{font-size:12px;color:var(--ink-3)}
-.now .pass{display:flex;gap:14px;flex-wrap:wrap;font-variant-numeric:tabular-nums;font-size:14px}
+.now .pass{display:flex;gap:12px;flex-wrap:wrap;font-variant-numeric:tabular-nums;font-size:13px}
 .now .pass em{font-style:normal;font-weight:600}
-.now .pass .E{color:var(--em)} .now .pass .C{color:var(--ch)}
-.now .next{font-size:13px;color:var(--ink-2)}
+.now .pass .E{color:var(--em)} .now .pass .C{color:var(--ch)} .now .pass .N{color:var(--nh)}
+.now .next{font-size:12.5px;color:var(--ink-2)}
 .now .next .arr{color:var(--ink-3);margin:0 4px}
 .now .next b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
-.now .warn{font-size:12px;color:var(--warn);font-weight:500}
-.now .note{font-size:12px;color:var(--ink-3)}
+.now .warn{font-size:11.5px;color:var(--warn);font-weight:500}
+.now .note{font-size:11.5px;color:var(--ink-3)}
 .now .auto{font-size:12px;color:var(--ch);background:none;border:0;padding:0;cursor:pointer;font-weight:600}
-.tiles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-@media (max-width:360px){.tiles{grid-template-columns:1fr}}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+@media (max-width:360px){.tiles{grid-template-columns:1fr 1fr}}
 .tile{
-  display:grid;grid-template-columns:1fr auto;gap:0 8px;align-items:center;min-width:0;
-  padding:5px 8px;border-radius:10px;background:var(--panel-2);border-left:5px solid var(--c);cursor:pointer;
+  display:grid;grid-template-columns:1fr;min-width:0;
+  padding:5px 8px 5px 7px;border-radius:10px;background:var(--panel-2);border-left:5px solid var(--c);cursor:pointer;
 }
+.tile .top{display:flex;align-items:baseline;justify-content:space-between;gap:6px;min-width:0}
+.tile .top .big{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:18px;line-height:1.1;font-variant-numeric:tabular-nums;flex:0 0 auto}
 .tile:focus-visible{outline:2px solid var(--c);outline-offset:2px}
-.tile .name{font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden}
+.tile .name{font-weight:600;font-size:13px;display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .tile .name .st{width:9px;height:9px;border-radius:50%;background:var(--c);flex:0 0 auto}
 .tile .name .st.proj{background:transparent;border:2px dashed var(--c)}
 .tile .name .st.hold{background:var(--warn)}
@@ -171,12 +175,9 @@ button{font:inherit;color:inherit}
 .chip.proj{border-style:dashed}
 .chip.hold{background:var(--warn);border-color:var(--warn);color:#fff}
 .chip.done{background:var(--ink);border-color:var(--ink);color:var(--panel)}
-.tile .main{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tile .main{font-size:11.5px;color:var(--ink-2);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tile .main b{color:var(--ink);font-weight:600}
-.tile .right{text-align:right;font-variant-numeric:tabular-nums}
-.tile .right .big{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:20px;line-height:1}
-.tile .right .lbl{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
-.tile .note{grid-column:1/-1;font-size:11px;color:var(--warn);margin-top:2px;white-space:normal}
+.tile .note{grid-column:1/-1;font-size:10.5px;color:var(--warn);margin-top:2px;white-space:normal}
 .hint{font-size:12px;background:var(--em-soft);color:var(--ink);padding:8px 12px;border-radius:10px;display:flex;gap:10px;align-items:center}
 .hint button{margin-left:auto;background:none;border:0;font-weight:600;color:var(--em);cursor:pointer}
 
@@ -225,17 +226,14 @@ dialog h3{margin:8px 0 0;font-size:11px;letter-spacing:.08em;text-transform:uppe
   <dialog id="settings">
     <form method="dialog" id="settingsForm">
       <h2>Instellingen</h2>
-      <h3>Gepland tempo (tot aan de mat op km 8,7)</h3>
-      <div class="row"><label for="paceE_m">Emilie</label><input type="number" id="paceE_m" min="3" max="12" inputmode="numeric"> <span class="unit">min</span> <input type="number" id="paceE_s" min="0" max="59" inputmode="numeric"> <span class="unit">sec /km</span></div>
-      <div class="row"><label for="paceC_m">Charlotte</label><input type="number" id="paceC_m" min="3" max="12" inputmode="numeric"> <span class="unit">min</span> <input type="number" id="paceC_s" min="0" max="59" inputmode="numeric"> <span class="unit">sec /km</span></div>
+      <h3>Gepland tempo (tot aan de mat op km 8,7) · vinkje = telt mee voor het plan</h3>
+      <div id="paceRows"></div>
       <h3>Start</h3>
       <div class="row"><label for="startDelay">Minuten na het startschot (10:45) tot ze de startlijn passeren (enkel zolang er geen chip-starttijd is)</label><input type="number" id="startDelay" min="0" max="30" inputmode="numeric"> <span class="unit">min</span></div>
       <h3>Na de tussentijd op km 8,7</h3>
       <div class="row"><label for="fadePct">Hoeveel trager ze de rest lopen dan hun gemeten gemiddelde</label><input type="number" id="fadePct" min="-10" max="20" inputmode="numeric"> <span class="unit">%</span></div>
       <h3>Plan</h3>
       <div class="row"><label for="bufferMin">Minuten die je op een plek wil zijn vóór de eerste zus aankomt</label><input type="number" id="bufferMin" min="0" max="20" inputmode="numeric"> <span class="unit">min</span></div>
-      <h3>Kaart</h3>
-      <div class="row"><label for="showCars">Toon vlag- en kopwagens (GPS)</label><input type="checkbox" id="showCars"></div>
       <h3>Oefenen</h3>
       <div class="row"><label for="simOn">Simuleer de wedstrijdtijd</label><input type="checkbox" id="simOn"></div>
       <div class="row"><input type="range" id="simMin" min="-60" max="140" step="1"><span class="unit" id="simLabel">+30 min</span></div>
@@ -259,16 +257,21 @@ const CFG = {
   raceDate: '2026-09-20',
   gunMs: (10 * 60 + 45) * 60 * 1000,          // 10:45:00 lokaal, ms sinds middernacht
   tz: 'Europe/Brussels',
-  pollMs: 20000, carsMs: 10000,
+  pollMs: 20000,
   holdMs: 12 * 60000,                          // hoe lang we aan de mat wachten op een ontbrekende tussentijd
   runners: [
-    { bib: 944,  name: 'Emilie',    key: 'E', color: 'var(--em)', hex: '#E4572E' },
-    { bib: 4861, name: 'Charlotte', key: 'C', color: 'var(--ch)', hex: '#2F7FBF' },
+    { bib: 944,  name: 'Emilie',    key: 'E', color: 'var(--em)', hex: '#E4572E', pace: 420 },
+    { bib: 4861, name: 'Charlotte', key: 'C', color: 'var(--ch)', hex: '#2F7FBF', pace: 420 },
+    { bib: 937,  name: 'Nicolaas',  key: 'N', color: 'var(--nh)', hex: '#0E8C8C', pace: 350 },   // loopt onder de naam Adriaan Conickx
   ],
 };
-const DEFAULTS = { paceE: 420, paceC: 420, startDelay: 6, fadePct: 3, bufferMin: 5, showCars: true, simOn: false, simMin: 30, hintDone: false, manualStop: null };
+const DEFAULTS = { pace: {}, plan: {}, startDelay: 6, fadePct: 3, bufferMin: 5, simOn: false, simMin: 30, hintDone: false, manualStop: null };
 let settings = { ...DEFAULTS };
 try { Object.assign(settings, JSON.parse(localStorage.getItem('g10m') || '{}')); } catch (e) {}
+if (settings.paceE) { settings.pace[944] = settings.paceE; delete settings.paceE; }     // oude instellingen overnemen
+if (settings.paceC) { settings.pace[4861] = settings.paceC; delete settings.paceC; }
+const paceOf = (r) => (settings.pace && settings.pace[r.bib]) || r.pace;
+const inPlan = (r) => !settings.plan || settings.plan[r.bib] !== false;
 const saveSettings = () => { try { localStorage.setItem('g10m', JSON.stringify(settings)); } catch (e) {} };
 
 // ---------------------------------------------------------------- tijd
@@ -313,7 +316,7 @@ function segment(m0, m1) {
 function hav(a, b, c, d) { const r = Math.PI / 180, x = (c - a) * r, y = (d - b) * r; const h = Math.sin(x / 2) ** 2 + Math.cos(a * r) * Math.cos(c * r) * Math.sin(y / 2) ** 2; return 12742000 * Math.asin(Math.sqrt(h)); }
 
 // ---------------------------------------------------------------- live data
-const live = { table: {}, detail: {}, cars: {}, lastOk: null, lastErr: null, splitDist: null, splitLabel: null };
+const live = { table: {}, detail: {}, lastOk: null, lastErr: null, splitDist: null, splitLabel: null };
 async function getJson(url) { const r = await fetch(url, { cache: 'no-store' }); if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }
 function parseTable(data) {
   const cols = data.TableDefinition.Columns;
@@ -363,21 +366,12 @@ async function poll() {
   if (ok) { live.lastOk = Date.now(); live.lastErr = null; }
   render();
 }
-async function pollCars() {
-  if (!settings.showCars) { drawCars(); return; }
-  try { live.cars = await getJson(`${CFG.eventsApi}gps/get/${CFG.eventId}`); } catch (e) { /* laatste behouden */ }
-  drawCars();
-}
-const CAR_NAMES = { GV: 'Groene vlag · kop van de wedstrijd', RV: 'Rode vlag · staart van de wedstrijd', GV5: 'Groene vlag 5 Mijl', H2: '2e heer', H3: '3e heer', D1: '1e dame', D2: '2e dame', D3: '3e dame', P1: 'Parcourswagen 1', P2: 'Parcourswagen 2', P3: 'Parcourswagen 3', P4: 'Parcourswagen 4' };
-let carCfg = null;
-async function loadCarConfig() { try { carCfg = await getJson(`${CFG.eventsApi}gps/config/${CFG.eventId}`); } catch (e) { carCfg = null; } }
-
 // ---------------------------------------------------------------- loopstermodel
 // Fasen: waiting (voor de start), starting (schot gevallen, nog geen startchip), running, finished.
 // Bron van het tempo: planned (instelling), implied (nog geen tussentijd hoewel verwacht), measured (tussentijd van de mat).
 function model(r) {
   const now = nowMs(), d = live.detail[r.bib], t = live.table[r.bib] || {};
-  const planned = (r.key === 'E' ? settings.paceE : settings.paceC) * 1000;
+  const planned = paceOf(r) * 1000;
   const matM = live.splitDist || MAT_M;
   const fade = 1 + settings.fadePct / 100;
   const st = { r, now, phase: 'waiting', distM: 0, pace: planned, source: 'planned', startMs: null, startSource: null, notes: [], t, matM, held: false };
@@ -467,10 +461,12 @@ function planModel(states) {
   for (const st of stops) {
     if (st.kind === 'view') {
       st.pass = states.map((s) => passAt(s, st.view_m));
-      st.first = Math.min(...st.pass.map((p) => p.t).filter((x) => x != null));
-      st.last = Math.max(...st.pass.map((p) => p.t).filter((x) => x != null));
+      const planned = st.pass.filter((p, i) => inPlan(states[i].r) && p.t != null);
+      const pool = planned.length ? planned : st.pass.filter((p) => p.t != null);
+      st.first = Math.min(...pool.map((p) => p.t));
+      st.last = Math.max(...pool.map((p) => p.t));
       st.arriveBy = st.first - buffer;
-      st.done = st.pass.every((p) => p.passed);
+      st.done = pool.every((p) => p.passed);
     }
   }
   for (let i = 0; i < stops.length; i++) {
@@ -490,7 +486,7 @@ function nextViewArrive(stops, i) { for (let k = i; k < stops.length; k++) if (s
 function walkTo(stops, i) { let ms = 0; for (let k = i; k < stops.length && stops[k].kind !== 'view'; k++) ms += (stops[k].legOut ? stops[k].legOut.min * 60000 : 0); return ms; }
 
 // ---------------------------------------------------------------- kaart
-let map, layers = { runners: {}, bands: {}, cars: null, me: null, pins: {}, legs: null }, meWatch = null, mePos = null, followBib = null;
+let map, layers = { runners: {}, bands: {}, me: null, pins: {}, legs: null, groups: null }, meWatch = null, mePos = null, followBib = null;
 function buildMap() {
   map = L.map('map', { zoomControl: false, attributionControl: true });
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
@@ -512,8 +508,8 @@ function buildMap() {
     layers.pins[s.id] = L.marker(s.ll, { icon: pinIcon(i, ''), zIndexOffset: 500 }).bindPopup(`<b>${i + 1}. ${s.name}</b><br>${s.note}`).addTo(map)
       .on('click', () => { settings.manualStop = i; saveSettings(); render(); });
   });
-  layers.cars = L.layerGroup().addTo(map);
   layers.me = L.layerGroup().addTo(map);
+  layers.groups = L.layerGroup().addTo(map);
   for (const r of CFG.runners) {
     layers.bands[r.bib] = L.polyline([], { color: r.hex, weight: 12, opacity: .3, lineCap: 'round' }).addTo(map);
     layers.runners[r.bib] = L.marker(llAtM(0), { icon: runnerIcon(r, 'proj', false), zIndexOffset: 1000 }).addTo(map);
@@ -523,25 +519,16 @@ function buildMap() {
   map.on('zoomend', () => render());
 }
 function pinIcon(i, cls) { const s = cls === 'cur' ? 34 : 28; return L.divIcon({ className: '', iconSize: [s, s], iconAnchor: [s * .15, s * .95], html: `<div class="pin ${cls}"><span>${i + 1}</span></div>` }); }
-function runnerIcon(r, mode, isLive, dx = 0, tagUp = false) {
-  // dx: zijwaartse verschuiving in pixels als de twee stippen samenvallen; tagUp: naam boven i.p.v. onder de stip
-  return L.divIcon({ className: '', iconSize: [34, 34], iconAnchor: [17 - dx, 17],
-    html: `<div class="rm ${mode} ${isLive ? 'live' : ''} ${tagUp ? 'up' : ''}" style="--c:${r.hex}"><div class="halo"></div><div class="dot">${r.key}</div><div class="tag">${r.name}</div></div>` });
+function runnerIcon(r, mode, isLive) {
+  return L.divIcon({ className: '', iconSize: [34, 34], iconAnchor: [17, 17],
+    html: `<div class="rm ${mode} ${isLive ? 'live' : ''}" style="--c:${r.hex}"><div class="halo"></div><div class="dot">${r.key}</div><div class="tag">${r.name}</div></div>` });
 }
-function drawCars() {
-  layers.cars.clearLayers();
-  if (!settings.showCars) return;
-  const now = Date.now();
-  for (const id in live.cars) {
-    const c = live.cars[id], meta = carCfg && carCfg.Trackers && carCfg.Trackers[id];
-    const bib = meta ? meta.Bib : id, name = meta ? meta.DisplayName : id;
-    const age = now - Date.parse(c.Time + 'Z');
-    if (!(age < 20 * 60000) || !c.Lat) continue;
-    if (hav(c.Lat, c.Lon, R.track[0][0], R.track[0][1]) > 6000) continue;
-    const color = bib === 'GV' ? '#2E9E5B' : bib === 'RV' ? '#D14343' : '#7B8794';
-    L.marker([c.Lat, c.Lon], { icon: L.divIcon({ className: '', iconSize: [26, 26], iconAnchor: [13, 13], html: `<div class="car" style="--c:${color}">${bib}</div>` }) })
-      .bindPopup(`<b>${CAR_NAMES[bib] || name}</b><br>${Math.round(c.Speed || 0)} km/u · ${Math.round(age / 1000)} s geleden`).addTo(layers.cars);
-  }
+// Eén gecombineerde stip voor loopsters die op het scherm samenvallen: taartpunten in hun kleuren, initialen en namen samen.
+function groupIcon(members, mode, isLive) {
+  const n = members.length, seg = 360 / n;
+  const grad = `conic-gradient(${members.map((s, i) => `${s.r.hex} ${i * seg}deg ${(i + 1) * seg}deg`).join(', ')})`;
+  return L.divIcon({ className: '', iconSize: [40, 40], iconAnchor: [20, 20],
+    html: `<div class="rm grp ${mode} ${isLive ? 'live' : ''}" style="--grad:${grad}"><div class="halo"></div><div class="dot">${members.map((s) => s.r.key).join('')}</div><div class="tag">${members.map((s) => s.r.name).join(' · ')}</div></div>` });
 }
 function toggleMe() {
   const btn = document.getElementById('btnMe');
@@ -579,11 +566,21 @@ function render() {
   // Samenvallende stippen (zelfde plek op het parcours) uit elkaar schuiven zodat beide zichtbaar blijven.
   const lls = states.map((s) => llAtM(s.distM));
   const pts = lls.map((ll) => map.latLngToContainerPoint(ll));
-  const together = states.length === 2 && pts[0].distanceTo(pts[1]) < 44;   // in schermpixels, dus ook uitgezoomd
+  const group = states.map(() => -1); let ng = 0;                          // stippen die op het scherm samenvallen
+  states.forEach((s, i) => { if (group[i] < 0) { group[i] = ng; states.forEach((q, j) => { if (j > i && group[j] < 0 && pts[i].distanceTo(pts[j]) < 46) group[j] = ng; }); ng++; } });
+  const sizes = {}; group.forEach((g) => { sizes[g] = (sizes[g] || 0) + 1; });
+  layers.groups.clearLayers();
+  for (let g = 0; g < ng; g++) {
+    if (sizes[g] < 2) continue;
+    const members = states.filter((s, i) => group[i] === g);
+    const lat = members.reduce((a, s, i) => a + lls[states.indexOf(s)][0], 0) / members.length, lon = members.reduce((a, s) => a + lls[states.indexOf(s)][1], 0) / members.length;
+    const mode = members.every((s) => s.source === 'measured' || s.phase === 'finished') ? 'meas' : 'proj';
+    L.marker([lat, lon], { icon: groupIcon(members, mode, members.some((s) => s.phase === 'running')), zIndexOffset: 1100 }).addTo(layers.groups);
+  }
   states.forEach((s, i) => {
     const r = s.r, mode = s.source === 'measured' ? 'meas' : 'proj', ll = lls[i];
-    const dx = together ? (i === 0 ? -19 : 19) : 0;
-    layers.runners[r.bib].setLatLng(ll).setIcon(runnerIcon(r, s.phase === 'finished' ? 'meas' : mode, s.phase === 'running', dx, together && i === 0));
+    layers.runners[r.bib].setOpacity(sizes[group[i]] > 1 ? 0 : 1);
+    layers.runners[r.bib].setLatLng(ll).setIcon(runnerIcon(r, s.phase === 'finished' ? 'meas' : mode, s.phase === 'running'));
     layers.bands[r.bib].setLatLngs(s.phase === 'running' && !s.held && s.distSlow != null ? segment(s.distSlow, s.distFast) : []);
     if (followBib === r.bib) map.panTo(ll);
   });
@@ -606,7 +603,7 @@ function render() {
   if (st.kind === 'view') {
     html += `<div class="pass">` + st.pass.map((p, i) => {
       const r = CFG.runners[i], soon = !p.passed && p.t > now && p.t - now < 3600000 ? ` <small>(${fmtIn(p.t - now).replace('over ', '')})</small>` : '';
-      return `<span class="${r.key}"><em>${r.name}</em> ${p.passed ? '✓ ' : ''}${fmtClock(p.t)}${p.kind === 'projected' && !p.passed ? '*' : ''}${soon}</span>`;
+      return `<span class="${r.key}" style="${inPlan(r) ? '' : 'opacity:.6'}"><em>${r.name}</em> ${p.passed ? '✓ ' : ''}${fmtClock(p.t)}${p.kind === 'projected' && !p.passed ? '*' : ''}${soon}</span>`;
     }).join('') + `</div>`;
   } else if (st.id === 'park') {
     html += `<div class="next">Schot <b>10:45</b> · zij stappen <b>${PLAN.runners_walk.min.toFixed(0)} min</b> naar de start.</div>`;
@@ -617,8 +614,8 @@ function render() {
     html += `<div class="next">${here}vertrek <b>${fmtClock(st.leaveBy)}</b>${st.leaveBy - now <= 0 ? ' · <b>nu</b>' : ''} · ${leg ? leg.min.toFixed(0) + ' min' : ''} naar ${next.short}${target}</div>`;
     if (st.kind === 'view' && st.slack != null) {
       const m = Math.round(st.slack / 60000);
-      if (m < 0) html += `<div class="warn">Krap (${-m} min tekort): vertrek zodra de tweede voorbij is.</div>`;
-      else if (m < 4) html += `<div class="warn">Maar ${m} min speling: vertrek meteen na de tweede.</div>`;
+      if (m < 0) html += `<div class="warn">Krap (${-m} min tekort): vertrek zodra de laatste voorbij is.</div>`;
+      else if (m < 4) html += `<div class="warn">Maar ${m} min speling: vertrek meteen na de laatste.</div>`;
     }
   } else if (st.kind === 'view') {
     html += `<div class="next">Laatste stop · medaille, AA-drink en reep voorbij de lijn.</div>`;
@@ -634,18 +631,18 @@ function render() {
   for (const s of states) {
     const r = s.r;
     let dot, main, big, lbl;
-    if (s.phase === 'waiting') { dot = 'proj'; main = `gepland ${fmtPace(s.pace)}`; big = fmtClock(s.assumedStart + s.pace * TOTAL / 1000); lbl = 'finish ~'; }
+    if (s.phase === 'waiting') { dot = 'proj'; main = `plan ${fmtPace(s.pace).replace(' /km', '')}`; big = fmtClock(s.assumedStart + s.pace * TOTAL / 1000); lbl = 'finish ~'; }
     else if (s.phase === 'starting') { dot = 'proj'; main = `wacht op startchip`; big = fmtDur(s.now - CFG.gunMs); lbl = 'sinds schot'; }
     else if (s.phase === 'finished') { dot = 'done'; main = `${fmtPace(s.pace)}${s.pos && s.pos !== '-' ? ` · ${s.pos}e` : ''}`; big = fmtDur(s.finishTime); lbl = 'chiptijd'; }
     else {
       dot = s.source === 'measured' ? 'meas' : s.source === 'implied' ? 'hold' : 'proj';
-      main = `km ${km(s.distM)} · ${fmtPace(s.pace)}${s.source === 'measured' ? '' : s.held ? ' · aan de mat' : '*'}`;
+      main = `km ${km(s.distM)} · ${fmtPace(s.pace).replace(' /km', '')}${s.source === 'measured' ? '' : s.held ? ' · mat' : '*'}`;
       big = fmtClock(s.etaFinish); lbl = 'finish ~';
     }
     const notes = s.notes.length ? `<div class="note">${s.notes.join(' · ')}</div>` : '';
     const el = document.createElement('div');
     el.className = 'tile'; el.style.setProperty('--c', r.color); el.tabIndex = 0; el.setAttribute('role', 'button');
-    el.innerHTML = `<div style="min-width:0"><div class="name"><span class="st ${dot}"></span>${r.name}</div><div class="main">${main}</div></div><div class="right"><div class="big">${big}</div><div class="lbl">${lbl}</div></div>${notes}`;
+    el.innerHTML = `<div class="top"><div class="name"><span class="st ${dot}"></span>${r.name}</div><div class="big" title="${lbl}">${big}</div></div><div class="main">${main}</div>${notes}`;
     el.addEventListener('click', () => { followBib = r.bib; map.setView(llAtM(s.distM), Math.max(map.getZoom(), 15)); });
     el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); } });
     tiles.appendChild(el);
@@ -655,9 +652,8 @@ function render() {
 
 // ---------------------------------------------------------------- instellingen
 function openSettings() {
-  $('paceE_m').value = Math.floor(settings.paceE / 60); $('paceE_s').value = settings.paceE % 60;
-  $('paceC_m').value = Math.floor(settings.paceC / 60); $('paceC_s').value = settings.paceC % 60;
-  $('startDelay').value = settings.startDelay; $('fadePct').value = settings.fadePct; $('bufferMin').value = settings.bufferMin; $('showCars').checked = settings.showCars;
+  $('paceRows').innerHTML = CFG.runners.map((r) => { const p = paceOf(r); return `<div class="row"><input type="checkbox" id="plan_${r.bib}" ${inPlan(r) ? 'checked' : ''} title="Telt mee voor het plan"><label for="pace_${r.bib}_m">${r.name} <small style="color:var(--ink-3)">#${r.bib}</small></label><input type="number" id="pace_${r.bib}_m" min="3" max="12" inputmode="numeric" value="${Math.floor(p / 60)}"> <span class="unit">min</span> <input type="number" id="pace_${r.bib}_s" min="0" max="59" inputmode="numeric" value="${p % 60}"> <span class="unit">sec /km</span></div>`; }).join('');
+  $('startDelay').value = settings.startDelay; $('fadePct').value = settings.fadePct; $('bufferMin').value = settings.bufferMin;
   $('simOn').checked = settings.simOn; $('simMin').value = settings.simMin; $('simLabel').textContent = `${settings.simMin >= 0 ? '+' : ''}${settings.simMin} min`;
   $('settings').showModal();
 }
@@ -665,16 +661,16 @@ $('simMin').addEventListener('input', (e) => { $('simLabel').textContent = `${e.
 $('btnCancel').addEventListener('click', () => $('settings').close());
 $('settingsForm').addEventListener('submit', () => {
   const n = (id, lo, hi, def) => { const v = parseInt($(id).value, 10); return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : def; };
-  settings.paceE = n('paceE_m', 3, 12, 7) * 60 + n('paceE_s', 0, 59, 0);
-  settings.paceC = n('paceC_m', 3, 12, 7) * 60 + n('paceC_s', 0, 59, 0);
-  settings.startDelay = n('startDelay', 0, 30, 6); settings.fadePct = n('fadePct', -10, 20, 3); settings.bufferMin = n('bufferMin', 0, 20, 5); settings.showCars = $('showCars').checked;
+  settings.pace = {}; settings.plan = {};
+  for (const r of CFG.runners) { settings.pace[r.bib] = n(`pace_${r.bib}_m`, 3, 12, Math.floor(r.pace / 60)) * 60 + n(`pace_${r.bib}_s`, 0, 59, 0); settings.plan[r.bib] = $(`plan_${r.bib}`).checked; }
+  settings.startDelay = n('startDelay', 0, 30, 6); settings.fadePct = n('fadePct', -10, 20, 3); settings.bufferMin = n('bufferMin', 0, 20, 5);
   settings.simOn = $('simOn').checked; settings.simMin = n('simMin', -60, 140, 30);
-  saveSettings(); pollCars(); poll();
+  saveSettings(); poll();
 });
 $('btnSettings').addEventListener('click', openSettings);
 $('btnFit').addEventListener('click', () => { followBib = null; map.fitBounds(L.latLngBounds(R.track.map((p) => [p[0], p[1]])), { padding: [20, 20] }); });
 $('btnMe').addEventListener('click', toggleMe);
-$('live').addEventListener('click', () => { poll(); pollCars(); });
+$('live').addEventListener('click', () => { poll(); });
 $('hintClose').addEventListener('click', () => { settings.hintDone = true; saveSettings(); $('hint').hidden = true; });
 $('strip').addEventListener('scroll', () => { $('strip').dataset.scrolled = '1'; }, { passive: true });
 
@@ -688,12 +684,10 @@ $('strip').addEventListener('scroll', () => { $('strip').dataset.scrolled = '1';
   TOTAL = R.official_m; MAT_M = R.mat_m;
   buildMap();
   render();
-  await loadCarConfig();
-  poll(); pollCars();
+  poll();
   setInterval(poll, CFG.pollMs);
-  setInterval(pollCars, CFG.carsMs);
   setInterval(render, 1000);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) { poll(); pollCars(); } });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 })();
 })();
