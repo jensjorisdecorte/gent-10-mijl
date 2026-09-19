@@ -34,6 +34,7 @@
     --em:#FF7A52; --em-soft:#3A2119; --ch:#5AA6E3; --ch-soft:#16293A;
     --ok:#3FB86E; --bad:#E25C5C; --warn:#E0A32A;
     --shadow:0 6px 24px rgba(0,0,0,.5);
+    --map-filter:invert(1) hue-rotate(180deg) brightness(.82) contrast(.9) saturate(.7);
   }
 }
 :root[data-theme="dark"]{
@@ -42,8 +43,10 @@
   --em:#FF7A52; --em-soft:#3A2119; --ch:#5AA6E3; --ch-soft:#16293A;
   --ok:#3FB86E; --bad:#E25C5C; --warn:#E0A32A;
   --shadow:0 6px 24px rgba(0,0,0,.5);
+  --map-filter:invert(1) hue-rotate(180deg) brightness(.82) contrast(.9) saturate(.7);
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{height:100%;margin:0}
 body{
   background:var(--ground); color:var(--ink);
@@ -72,11 +75,12 @@ button{font:inherit;color:inherit}
 .live.sim i{background:var(--warn)}
 
 /* ---- map ---- */
-#map{flex:1 1 auto;min-height:200px;background:var(--panel-2)}
+.mapwrap{flex:1 1 auto;min-height:200px;position:relative;display:flex}
+#map{flex:1 1 auto;background:var(--panel-2)}
 .leaflet-container{font:inherit;background:var(--panel-2)}
 .leaflet-tile-pane{filter:var(--map-filter)}
 .leaflet-control-attribution{font-size:9px;background:rgba(255,255,255,.6)}
-.fabs{position:absolute;right:12px;display:flex;flex-direction:column;gap:8px;z-index:500}
+.fabs{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:8px;z-index:500}
 .fab{
   width:var(--tap);height:var(--tap);border-radius:12px;border:1px solid var(--line);
   background:var(--panel);box-shadow:var(--shadow);display:grid;place-items:center;cursor:pointer;
@@ -99,12 +103,12 @@ button{font:inherit;color:inherit}
 @media (prefers-reduced-motion: reduce){.rm.live .halo{animation:none}}
 .rm .tag{
   position:absolute;left:50%;top:100%;transform:translate(-50%,4px);white-space:nowrap;
-  background:var(--ink);color:#fff;font-size:11px;font-weight:600;padding:2px 6px;border-radius:6px;
+  background:#161B20;color:#fff;font-size:11px;font-weight:600;padding:2px 6px;border-radius:6px;
 }
-.poi{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--ink);font-size:11px;font-weight:700;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.3)}
-.poi.mat{background:var(--ink);color:#fff;width:26px;height:26px}
+.poi{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #161B20;font-size:11px;font-weight:700;color:#161B20;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.poi.mat{background:#161B20;color:#fff;width:26px;height:26px}
 .poi.aid{border-color:#2F7FBF;color:#2F7FBF}
-.poi.start{background:var(--ok);border-color:var(--ok);color:#fff}
+.poi.start{background:#2E9E5B;border-color:#2E9E5B;color:#fff}
 .poi.finish{background:repeating-conic-gradient(#161B20 0 25%,#fff 0 50%) 50%/8px 8px;color:transparent;border-color:#161B20}
 .kmm{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:11px;color:#fff;background:rgba(22,27,32,.75);padding:1px 5px;border-radius:4px;white-space:nowrap}
 .car{width:26px;height:26px;border-radius:7px;background:var(--c);color:#fff;display:grid;place-items:center;font-size:10px;font-weight:700;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35);opacity:.92}
@@ -182,11 +186,13 @@ dialog h3{margin:8px 0 0;font-size:11px;letter-spacing:.08em;text-transform:uppe
     <div class="clock" id="clock"><small>START</small>10:45</div>
   </header>
 
+  <div class="mapwrap">
   <div id="map" role="application" aria-label="Course map"></div>
   <div class="fabs" id="fabs">
     <button class="fab" id="btnMe" title="Show my position" aria-label="Show my position"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg></button>
     <button class="fab" id="btnFit" title="Fit course" aria-label="Fit the whole course"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     <button class="fab" id="btnSettings" title="Settings" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+  </div>
   </div>
 
   <section class="sheet" aria-live="polite">
@@ -226,6 +232,7 @@ const CFG = {
   table: 'LIVE3',
   resultsApi: 'https://results.chronorace.be/api/',
   eventsApi: 'https://prod.chronorace.be/api/',
+  raceDate: '2026-09-20',
   gunMs: (10 * 60 + 45) * 60 * 1000,          // 10:45:00 local, ms since midnight
   tz: 'Europe/Brussels',
   pollMs: 20000, carsMs: 10000,
@@ -241,6 +248,8 @@ const saveSettings = () => { try { localStorage.setItem('g10m', JSON.stringify(s
 
 // ---------------------------------------------------------------- time
 const tf = new Intl.DateTimeFormat('en-GB', { timeZone: CFG.tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+const df = new Intl.DateTimeFormat('en-CA', { timeZone: CFG.tz, year: 'numeric', month: '2-digit', day: '2-digit' });
+function daysToRace(d = new Date()) { return Math.round((Date.parse(CFG.raceDate) - Date.parse(df.format(d))) / 86400000); }
 function localMs(d = new Date()) {                // ms since local (Brussels) midnight
   const p = {}; for (const x of tf.formatToParts(d)) p[x.type] = x.value;
   return ((+p.hour % 24) * 3600 + (+p.minute) * 60 + (+p.second)) * 1000 + d.getMilliseconds();
@@ -248,7 +257,7 @@ function localMs(d = new Date()) {                // ms since local (Brussels) m
 let serverOffset = 0;                              // server clock minus phone clock, ms
 function nowMs() {
   if (settings.simOn) return CFG.gunMs + settings.simMin * 60000;
-  return localMs() + serverOffset;
+  return localMs() + serverOffset - daysToRace() * 86400000;   // before race day the clock counts down across days
 }
 const pad = (n) => String(n).padStart(2, '0');
 function fmtClock(ms) { if (ms == null) return '–'; const s = Math.round(ms / 1000); return `${Math.floor(s / 3600)}:${pad(Math.floor(s / 60) % 60)}`; }
@@ -393,11 +402,10 @@ function model(r) {
 // ---------------------------------------------------------------- map
 let map, tiles, layers = { runners: {}, bands: {}, cars: null, me: null, meMarker: null }, meWatch = null, mePos = null, followBib = null;
 const isDark = () => document.documentElement.dataset.theme === 'dark' || (document.documentElement.dataset.theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
-function tileUrl() { return isDark() ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'; }
+function tileUrl() { return 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'; }
 function buildMap() {
   map = L.map('map', { zoomControl: false, attributionControl: true });
-  tiles = L.tileLayer(tileUrl(), { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>' }).addTo(map);
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => tiles.setUrl(tileUrl()));
+  tiles = L.tileLayer(tileUrl(), { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
   const line = R.track.map((p) => [p[0], p[1]]);
   L.polyline(line, { color: '#fff', weight: 7, opacity: .9 }).addTo(map);
   L.polyline(line, { color: '#161B20', weight: 3, opacity: .9 }).addTo(map);
@@ -457,7 +465,9 @@ function toggleMe() {
 function render() {
   const now = nowMs();
   const clock = document.getElementById('clock');
-  if (now < CFG.gunMs) clock.innerHTML = `<small>START IN</small>${fmtDur(CFG.gunMs - now)}`;
+  const dtr = settings.simOn ? 0 : daysToRace();
+  if (dtr > 1) clock.innerHTML = `<small>IN ${dtr} DAYS</small>10:45`;
+  else if (now < CFG.gunMs) clock.innerHTML = `<small>${dtr === 1 ? 'TOMORROW · IN' : 'START IN'}</small>${fmtDur(CFG.gunMs - now)}`;
   else clock.innerHTML = `<small>RACE</small>${fmtDur(now - CFG.gunMs)}`;
   const liveEl = document.getElementById('live'), liveText = document.getElementById('liveText');
   if (settings.simOn) { liveEl.className = 'live sim'; liveText.textContent = 'simulation'; }
