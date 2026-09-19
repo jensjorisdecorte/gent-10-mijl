@@ -474,6 +474,7 @@ function planModel(states) {
     if (next) {
       const target = next.kind === 'view' ? next.arriveBy : (nextViewArrive(stops, i + 1) - (walkTo(stops, i + 1) || 0));
       st.leaveBy = target - (st.legOut ? st.legOut.min * 60000 : 0);
+      if (st.leave) { const [h, m] = st.leave.split(':').map(Number); st.leaveBy = (h * 60 + m) * 60000; }   // vast afgesproken vertrekuur
       if (st.kind === 'view') st.slack = st.leaveBy - st.last;
     }
     if (st.kind !== 'view') st.done = st.leaveBy != null && now > st.leaveBy;
@@ -606,7 +607,7 @@ function render() {
       return `<span class="${r.key}" style="${inPlan(r) ? '' : 'opacity:.6'}"><em>${r.name}</em> ${p.passed ? '✓ ' : ''}${fmtClock(p.t)}${p.kind === 'projected' && !p.passed ? '*' : ''}${soon}</span>`;
     }).join('') + `</div>`;
   } else if (st.id === 'park') {
-    html += `<div class="next">Schot <b>10:45</b> · zij stappen <b>${PLAN.runners_walk.min.toFixed(0)} min</b> naar de start.</div>`;
+    html += `<div class="next">Om <b>${st.leave}</b> aan de auto, meteen naar Kantien · zij stappen <b>${PLAN.runners_walk.min.toFixed(0)} min</b> naar de start (schot 10:45).</div>`;
   }
   if (next) {
     const leg = st.legOut, here = st.kind === 'view' && !st.done ? `Hier tegen <b>${fmtClock(st.arriveBy)}</b><span class="arr">→</span>` : '';
