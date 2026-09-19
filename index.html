@@ -599,7 +599,7 @@ function render() {
   if (mePos) {
     const dHere = hav(mePos.lat, mePos.lon, st.ll[0], st.ll[1]);
     html += `<div class="note">You are ${dHere < 1000 ? Math.round(dHere) + ' m' : (dHere / 1000).toFixed(1) + ' km'} from this stop.</div>`;
-  } else html += `<div class="note">${st.note}</div>`;
+  } else if (!html.includes('class="warn"')) html += `<div class="note">${st.note}</div>`;
   if (settings.manualStop != null) html += `<button class="auto" type="button" id="btnAuto">Back to automatic stop selection</button>`;
   $('now').innerHTML = html;
   const ba = $('btnAuto'); if (ba) ba.addEventListener('click', () => { settings.manualStop = null; saveSettings(); render(); });
