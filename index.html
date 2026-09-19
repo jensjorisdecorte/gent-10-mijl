@@ -6,6 +6,7 @@
 <title>Gent 10 Mijl Tracker</title>
 <meta name="description" content="Volg Emilie en Charlotte Wittamer op het parcours van de MAES Gent 10 Mijl 2026, met het wandelplan van de supporters.">
 <meta name="theme-color" content="#161B20">
+<meta name="color-scheme" content="light only">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -26,24 +27,6 @@
   --shadow:0 6px 24px rgba(16,24,32,.16);
   --map-filter:saturate(.18) contrast(.9) brightness(1.05);
   --tap:44px;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --ground:#0E1317; --panel:#171D23; --panel-2:#20272E; --line:#2C353E;
-    --ink:#EDF1F4; --ink-2:#B5BEC8; --ink-3:#7E8994;
-    --em:#FF7A52; --em-soft:#3A2119; --ch:#5AA6E3; --ch-soft:#16293A; --nh:#3FBFBF;
-    --ok:#3FB86E; --bad:#E25C5C; --warn:#E0A32A; --warn-soft:#3A2E12;
-    --shadow:0 6px 24px rgba(0,0,0,.5);
-    --map-filter:invert(1) hue-rotate(180deg) saturate(.15) brightness(.78) contrast(.9);
-  }
-}
-:root[data-theme="dark"]{
-  --ground:#0E1317; --panel:#171D23; --panel-2:#20272E; --line:#2C353E;
-  --ink:#EDF1F4; --ink-2:#B5BEC8; --ink-3:#7E8994;
-  --em:#FF7A52; --em-soft:#3A2119; --ch:#5AA6E3; --ch-soft:#16293A; --nh:#3FBFBF;
-  --ok:#3FB86E; --bad:#E25C5C; --warn:#E0A32A; --warn-soft:#3A2E12;
-  --shadow:0 6px 24px rgba(0,0,0,.5);
-  --map-filter:invert(1) hue-rotate(180deg) saturate(.15) brightness(.78) contrast(.9);
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
