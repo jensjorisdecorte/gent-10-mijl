@@ -427,9 +427,11 @@ function model(r) {
     st.distM = TOTAL - 40; st.held = true;
     st.notes.push('Geschatte aankomst bereikt, wachten op de chiptijd');
   }
-  const spread = 20000;                                          // ± 20 s/km onzekerheidsband
-  st.distFast = Math.min(TOTAL, anchorM + since / Math.max(60000, st.pace - spread) * 1000);
-  st.distSlow = Math.max(0, anchorM + since / (st.pace + spread) * 1000);
+  // Onzekerheidsband: ±40 s/km zolang we op het plan rekenen, ±30 s/km na de mat (de tweede helft loopt zelden
+  // exact zoals de eerste), en nooit smaller dan ±200 m.
+  const spread = st.source === 'measured' ? 30000 : 40000, floor = 200;
+  st.distFast = Math.min(TOTAL, Math.max(st.distM + floor, anchorM + since / Math.max(60000, st.pace - spread) * 1000));
+  st.distSlow = Math.max(0, Math.min(st.distM - floor, anchorM + since / (st.pace + spread) * 1000));
   st.etaMat = st.distM >= matM ? null : now + (matM - st.distM) * st.pace / 1000;
   st.etaFinish = now + (TOTAL - st.distM) * st.pace / 1000;
   return st;
