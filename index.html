@@ -354,15 +354,23 @@ async function poll() {
 // ---------------------------------------------------------------- loopstermodel
 // Fasen: waiting (voor de start), starting (schot gevallen, nog geen startchip), running, finished.
 // Bron van het tempo: planned (instelling), implied (nog geen tussentijd hoewel verwacht), measured (tussentijd van de mat).
+// Simulatie: elke loper heeft een verborgen 'echt' tempo dat iets afwijkt van het plan, en de chipmat en de finish geven op het juiste moment een tijd.
+function simDetail(r, now, planned, matM) {
+  const factor = { 944: 1.04, 4861: 0.98, 937: 1.01 }[r.bib] || 1;
+  const actual = planned * factor;
+  const start = CFG.gunMs + settings.startDelay * 60000 + (r.bib % 3) * 20000;
+  const matClock = start + actual * matM / 1000, finClock = start + actual * TOTAL / 1000;
+  const splits = [];
+  if (now >= matClock) splits.push({ Location: 'a_split', Time: matClock - start, Start: start, Finish: matClock, Pos: 0 });
+  if (now >= finClock) splits.push({ Location: 'reel', Time: finClock - start, Start: start, Finish: finClock, Pos: 0 });
+  return { Start: now >= start ? start : 0, Status: now >= start ? 'OK' : 'DNS', splits, Location: now >= finClock ? 'reel' : null, Time: now >= finClock ? finClock - start : 0, TotalDistance: TOTAL };
+}
 function model(r) {
-  const now = nowMs(), d = live.detail[r.bib], t = live.table[r.bib] || {};
-  const planned = paceOf(r) * 1000;
-  const matM = live.splitDist || MAT_M;
+  const now = nowMs(), planned = paceOf(r) * 1000, matM = live.splitDist || MAT_M;
+  const d = settings.simOn ? simDetail(r, now, planned, matM) : live.detail[r.bib], t = settings.simOn ? {} : (live.table[r.bib] || {});
   const fade = 1 + settings.fadePct / 100;
   const st = { r, now, phase: 'waiting', distM: 0, pace: planned, source: 'planned', startMs: null, startSource: null, notes: [], t, matM, held: false };
-  if (settings.simOn) {
-    st.startMs = CFG.gunMs + settings.startDelay * 60000; st.startSource = 'assumed';
-  } else {
+  {
     if (d && d.Start > 0 && d.Status !== 'DNS') { st.startMs = d.Start; st.startSource = 'chip'; }
     const splits = (d && d.splits || []).filter((s) => s.Time > 0);
     const inter = splits.filter((s) => s.Location !== 'reel');
@@ -398,7 +406,7 @@ function model(r) {
   let anchorM = 0;
   if (st.source === 'measured' && st.matClock != null) {
     anchorClock = st.matClock; anchorM = matM;                   // verankerd aan het passeren van de mat
-  } else if (!settings.simOn && elapsed / st.pace * 1000 >= matM - 60) {
+  } else if (elapsed / st.pace * 1000 >= matM - 60) {
     // Nog geen tussentijd: dan zijn ze de mat nog niet voorbij. Hou de stip vlak voor de mat
     // en leid het tempo af uit de tijd die ze er minstens over doen.
     const expectedMat = st.startMs + planned * matM / 1000;
@@ -417,7 +425,7 @@ function model(r) {
   st.distM = st.held ? matM - 60 : Math.min(TOTAL, anchorM + since / st.pace * 1000);
   if (!st.held && st.distM >= TOTAL - 40) {
     st.distM = TOTAL - 40; st.held = true;
-    if (!settings.simOn) st.notes.push('Geschatte aankomst bereikt, wachten op de chiptijd');
+    st.notes.push('Geschatte aankomst bereikt, wachten op de chiptijd');
   }
   const spread = 20000;                                          // ± 20 s/km onzekerheidsband
   st.distFast = Math.min(TOTAL, anchorM + since / Math.max(60000, st.pace - spread) * 1000);
