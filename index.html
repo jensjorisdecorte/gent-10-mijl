@@ -182,6 +182,15 @@ dialog h3{margin:8px 0 0;font-size:11px;letter-spacing:.08em;text-transform:uppe
 .btn.primary{background:var(--ink);color:var(--panel);border-color:var(--ink)}
 .btn:focus-visible,input:focus-visible{outline:2px solid var(--ch);outline-offset:2px}
 .help{font-size:12px;color:var(--ink-3);margin:0}
+.choices{display:grid;gap:8px}
+.choice{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--panel-2);cursor:pointer;font-weight:600;font-size:15px}
+.choice input{width:24px;height:24px;accent-color:var(--c)}
+.choice i{width:14px;height:14px;border-radius:50%;background:var(--c);display:inline-block}
+.choice small{font-weight:400;color:var(--ink-3);margin-left:auto}
+.tile.off{opacity:.55}
+.tile .st{cursor:pointer;width:13px;height:13px;margin-right:1px}
+.tile .st.off{background:transparent!important;border:2px solid var(--ink-3)!important;opacity:.7}
+.now .pass .off{opacity:.5}
 </style>
 </head>
 <body>
@@ -207,10 +216,19 @@ dialog h3{margin:8px 0 0;font-size:11px;letter-spacing:.08em;text-transform:uppe
     <div class="tiles" id="tiles"></div>
   </section>
 
+  <dialog id="chooser">
+    <form method="dialog" id="chooserForm">
+      <h2>Wie volg je vandaag?</h2>
+      <p class="help">De tijden in het plan (wanneer je ergens moet zijn en wanneer je moet vertrekken) volgen de lopers die je hier aanvinkt. De anderen blijven zichtbaar op de kaart. Je kan dit altijd wijzigen door op het bolletje naast een naam te tikken.</p>
+      <div id="chooserRows" class="choices"></div>
+      <div class="actions"><button class="btn primary" type="submit">Klaar</button></div>
+    </form>
+  </dialog>
+
   <dialog id="settings">
     <form method="dialog" id="settingsForm">
       <h2>Instellingen</h2>
-      <h3>Gepland tempo (tot aan de mat op km 8,7) · vinkje = telt mee voor het plan</h3>
+      <h3>Gepland tempo (tot aan de mat op km 8,7) · vinkje = ik volg deze loper</h3>
       <div id="paceRows"></div>
       <h3>Start</h3>
       <div class="row"><label for="startDelay">Minuten na het startschot (10:45) tot ze de startlijn passeren (enkel zolang er geen chip-starttijd is)</label><input type="number" id="startDelay" min="0" max="30" inputmode="numeric"> <span class="unit">min</span></div>
@@ -250,13 +268,14 @@ const CFG = {
     { bib: 937,  name: 'Nicolaas',  key: 'N', color: 'var(--nh)', hex: '#0E8C8C', pace: 350 },   // loopt onder de naam Adriaan Conickx
   ],
 };
-const DEFAULTS = { pace: {}, plan: {}, startDelay: 6, fadePct: 3, bufferMin: 5, simOn: false, simMin: 30, simSpeed: 30, simStartedAt: 0, hintDone: false, manualStop: null };
+const DEFAULTS = { pace: {}, follow: {}, followChosen: false, startDelay: 6, fadePct: 3, bufferMin: 5, simOn: false, simMin: 30, simSpeed: 30, simStartedAt: 0, hintDone: false, manualStop: null };
 let settings = { ...DEFAULTS };
 try { Object.assign(settings, JSON.parse(localStorage.getItem('g10m') || '{}')); } catch (e) {}
 if (settings.paceE) { settings.pace[944] = settings.paceE; delete settings.paceE; }     // oude instellingen overnemen
 if (settings.paceC) { settings.pace[4861] = settings.paceC; delete settings.paceC; }
 const paceOf = (r) => (settings.pace && settings.pace[r.bib]) || r.pace;
-const inPlan = (r) => !settings.plan || settings.plan[r.bib] !== false;
+if (settings.plan && !settings.follow) settings.follow = settings.plan;                          // oude naam
+const inPlan = (r) => !settings.follow || settings.follow[r.bib] !== false;
 const saveSettings = () => { try { localStorage.setItem('g10m', JSON.stringify(settings)); } catch (e) {} };
 
 // ---------------------------------------------------------------- tijd
@@ -575,7 +594,7 @@ function render() {
   }
   states.forEach((s, i) => {
     const r = s.r, mode = s.source === 'measured' ? 'meas' : 'proj', ll = lls[i];
-    layers.runners[r.bib].setOpacity(sizes[group[i]] > 1 ? 0 : 1);
+    layers.runners[r.bib].setOpacity(sizes[group[i]] > 1 ? 0 : inPlan(r) ? 1 : .75);
     layers.runners[r.bib].setLatLng(ll).setIcon(runnerIcon(r, s.phase === 'finished' ? 'meas' : mode, s.phase === 'running'));
     layers.bands[r.bib].setLatLngs(s.phase === 'running' && !s.held && s.distSlow != null ? segment(s.distSlow, s.distFast) : []);
     if (followBib === r.bib) map.panTo(ll);
@@ -599,7 +618,7 @@ function render() {
   if (st.kind === 'view') {
     html += `<div class="pass">` + st.pass.map((p, i) => {
       const r = CFG.runners[i], soon = !p.passed && p.t > now && p.t - now < 3600000 ? ` <small>(${fmtIn(p.t - now).replace('over ', '')})</small>` : '';
-      return `<span class="${r.key}" style="${inPlan(r) ? '' : 'opacity:.6'}"><em>${r.name}</em> ${p.passed ? '✓ ' : ''}${fmtClock(p.t)}${p.kind === 'projected' && !p.passed ? '*' : ''}${soon}</span>`;
+      return `<span class="${r.key} ${inPlan(r) ? '' : 'off'}"><em>${r.name}</em> ${p.passed ? '✓ ' : ''}${fmtClock(p.t)}${p.kind === 'projected' && !p.passed ? '*' : ''}${soon}</span>`;
     }).join('') + `</div>`;
   } else if (st.id === 'park') {
     html += `<div class="next">Om <b>${st.leave}</b> aan de auto, meteen naar Kantien · zij stappen <b>${PLAN.runners_walk.min.toFixed(0)} min</b> naar de start (schot 10:45).</div>`;
@@ -637,8 +656,10 @@ function render() {
     }
     const notes = s.notes.length ? `<div class="note">${s.notes.join(' · ')}</div>` : '';
     const el = document.createElement('div');
-    el.className = 'tile'; el.style.setProperty('--c', r.color); el.tabIndex = 0; el.setAttribute('role', 'button');
-    el.innerHTML = `<div class="top"><div class="name"><span class="st ${dot}"></span>${r.name}</div><div class="big" title="${lbl}">${big}</div></div><div class="main">${main}</div>${notes}`;
+    const on = inPlan(r);
+    el.className = 'tile' + (on ? '' : ' off'); el.style.setProperty('--c', r.color); el.tabIndex = 0; el.setAttribute('role', 'button');
+    el.innerHTML = `<div class="top"><div class="name"><span class="st ${dot} ${on ? '' : 'off'}" role="checkbox" aria-checked="${on}" title="${on ? 'Ik volg ' + r.name : r.name + ' niet gevolgd'}"></span>${r.name}</div><div class="big" title="${lbl}">${big}</div></div><div class="main">${main}</div>${notes}`;
+    el.querySelector('.st').addEventListener('click', (e) => { e.stopPropagation(); settings.follow = settings.follow || {}; settings.follow[r.bib] = !on; settings.followChosen = true; saveSettings(); render(); });
     el.addEventListener('click', () => { followBib = r.bib; map.setView(llAtM(s.distM), Math.max(map.getZoom(), 15)); });
     el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); } });
     tiles.appendChild(el);
@@ -648,7 +669,7 @@ function render() {
 
 // ---------------------------------------------------------------- instellingen
 function openSettings() {
-  $('paceRows').innerHTML = CFG.runners.map((r) => { const p = paceOf(r); return `<div class="row"><input type="checkbox" id="plan_${r.bib}" ${inPlan(r) ? 'checked' : ''} title="Telt mee voor het plan"><label for="pace_${r.bib}_m">${r.name} <small style="color:var(--ink-3)">#${r.bib}</small></label><input type="number" id="pace_${r.bib}_m" min="3" max="12" inputmode="numeric" value="${Math.floor(p / 60)}"> <span class="unit">min</span> <input type="number" id="pace_${r.bib}_s" min="0" max="59" inputmode="numeric" value="${p % 60}"> <span class="unit">sec /km</span></div>`; }).join('');
+  $('paceRows').innerHTML = CFG.runners.map((r) => { const p = paceOf(r); return `<div class="row"><input type="checkbox" id="plan_${r.bib}" ${inPlan(r) ? 'checked' : ''} title="Ik volg deze loper"><label for="pace_${r.bib}_m">${r.name} <small style="color:var(--ink-3)">#${r.bib}</small></label><input type="number" id="pace_${r.bib}_m" min="3" max="12" inputmode="numeric" value="${Math.floor(p / 60)}"> <span class="unit">min</span> <input type="number" id="pace_${r.bib}_s" min="0" max="59" inputmode="numeric" value="${p % 60}"> <span class="unit">sec /km</span></div>`; }).join('');
   $('startDelay').value = settings.startDelay; $('fadePct').value = settings.fadePct; $('bufferMin').value = settings.bufferMin;
   $('simOn').checked = settings.simOn; $('simSpeed').value = String(settings.simSpeed || 30); $('simMin').value = settings.simMin; $('simLabel').textContent = `${settings.simMin >= 0 ? '+' : ''}${settings.simMin} min`;
   $('settings').showModal();
@@ -657,13 +678,22 @@ $('simMin').addEventListener('input', (e) => { $('simLabel').textContent = `${e.
 $('btnCancel').addEventListener('click', () => $('settings').close());
 $('settingsForm').addEventListener('submit', () => {
   const n = (id, lo, hi, def) => { const v = parseInt($(id).value, 10); return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : def; };
-  settings.pace = {}; settings.plan = {};
-  for (const r of CFG.runners) { settings.pace[r.bib] = n(`pace_${r.bib}_m`, 3, 12, Math.floor(r.pace / 60)) * 60 + n(`pace_${r.bib}_s`, 0, 59, 0); settings.plan[r.bib] = $(`plan_${r.bib}`).checked; }
+  settings.pace = {}; settings.follow = {};
+  for (const r of CFG.runners) { settings.pace[r.bib] = n(`pace_${r.bib}_m`, 3, 12, Math.floor(r.pace / 60)) * 60 + n(`pace_${r.bib}_s`, 0, 59, 0); settings.follow[r.bib] = $(`plan_${r.bib}`).checked; }
+  settings.followChosen = true;
   settings.startDelay = n('startDelay', 0, 30, 6); settings.fadePct = n('fadePct', -10, 20, 3); settings.bufferMin = n('bufferMin', 0, 20, 5);
   settings.simOn = $('simOn').checked; settings.simMin = n('simMin', -60, 140, 30); settings.simSpeed = +$('simSpeed').value || 30; settings.simStartedAt = Date.now();
   saveSettings(); poll();
 });
 $('btnSettings').addEventListener('click', openSettings);
+function openChooser() {
+  $('chooserRows').innerHTML = CFG.runners.map((r) => `<label class="choice" style="--c:${r.hex}"><input type="checkbox" id="ch_${r.bib}" ${inPlan(r) ? 'checked' : ''}><i></i>${r.name}<small>#${r.bib} · ${fmtPace(paceOf(r) * 1000)}</small></label>`).join('');
+  $('chooser').showModal();
+}
+$('chooserForm').addEventListener('submit', () => {
+  settings.follow = {}; for (const r of CFG.runners) settings.follow[r.bib] = $(`ch_${r.bib}`).checked;
+  settings.followChosen = true; saveSettings(); render();
+});
 $('btnFit').addEventListener('click', () => { followBib = null; map.fitBounds(L.latLngBounds(R.track.map((p) => [p[0], p[1]])), { padding: [20, 20] }); });
 $('btnMe').addEventListener('click', toggleMe);
 $('live').addEventListener('click', () => { poll(); });
@@ -680,6 +710,7 @@ $('strip').addEventListener('scroll', () => { $('strip').dataset.scrolled = '1';
   TOTAL = R.official_m; MAT_M = R.mat_m;
   buildMap();
   render();
+  if (!settings.followChosen) openChooser();
   poll();
   setInterval(poll, CFG.pollMs);
   setInterval(render, 1000);
