@@ -1,5 +1,5 @@
 // Shell cache only. API and tile requests go straight to the network.
-const VERSION = 'v5';
+const VERSION = 'v6';
 const SHELL = ['./', './index.html', './route.json', './plan.json', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
