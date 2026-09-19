@@ -1,7 +1,7 @@
 {
   "name": "Gent 10 Mijl · Emilie & Charlotte",
   "short_name": "10 Mijl",
-  "description": "Follow Emilie and Charlotte Wittamer live on the MAES Gent 10 Mijl 2026 course.",
+  "description": "Volg Emilie en Charlotte Wittamer live op de MAES Gent 10 Mijl 2026, met het wandelplan van de supporters.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -9,7 +9,17 @@
   "background_color": "#F2F4F6",
   "theme_color": "#161B20",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ]
 }

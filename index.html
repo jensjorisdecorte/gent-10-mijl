@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="nl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Gent 10 Mijl Tracker</title>
-<meta name="description" content="Follow Emilie and Charlotte Wittamer on the MAES Gent 10 Mijl 2026 course, with the supporters' walking plan.">
+<meta name="description" content="Volg Emilie en Charlotte Wittamer op het parcours van de MAES Gent 10 Mijl 2026, met het wandelplan van de supporters.">
 <meta name="theme-color" content="#161B20">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -101,6 +101,7 @@ button{font:inherit;color:inherit}
 .rm.live .halo{animation:pulse 1.8s ease-out infinite}
 @keyframes pulse{0%{transform:scale(.6);opacity:.45}100%{transform:scale(1.4);opacity:0}}
 @media (prefers-reduced-motion: reduce){.rm.live .halo{animation:none}}
+.rm.up .tag{top:auto;bottom:100%;transform:translate(-50%,-4px)}
 .rm .tag{position:absolute;left:50%;top:100%;transform:translate(-50%,4px);white-space:nowrap;background:#161B20;color:#fff;font-size:11px;font-weight:600;padding:2px 6px;border-radius:6px}
 .poi{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #161B20;font-size:11px;font-weight:700;color:#161B20;box-shadow:0 1px 4px rgba(0,0,0,.3)}
 .poi.mat{background:#161B20;color:#fff;width:26px;height:26px}
@@ -139,13 +140,11 @@ button{font:inherit;color:inherit}
 .stop.cur i{background:rgba(255,255,255,.25)}
 .stop.done{opacity:.55}
 .stop:focus-visible{outline:2px solid var(--ch);outline-offset:2px}
-.now{
-  border-radius:12px;background:var(--panel-2);padding:8px 12px;display:grid;gap:3px;border-left:5px solid #7B4DBE;
-}
+.now{border-radius:12px;background:var(--panel-2);padding:8px 12px;display:grid;gap:3px;border-left:5px solid #7B4DBE}
 .now .h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .now .h b{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:20px;line-height:1.1}
 .now .h span{font-size:12px;color:var(--ink-3)}
-.now .pass{display:flex;gap:14px;font-variant-numeric:tabular-nums;font-size:14px}
+.now .pass{display:flex;gap:14px;flex-wrap:wrap;font-variant-numeric:tabular-nums;font-size:14px}
 .now .pass em{font-style:normal;font-weight:600}
 .now .pass .E{color:var(--em)} .now .pass .C{color:var(--ch)}
 .now .next{font-size:13px;color:var(--ink-2)}
@@ -160,23 +159,19 @@ button{font:inherit;color:inherit}
   padding:6px 8px 6px 8px;border-radius:10px;background:var(--panel-2);border-left:5px solid var(--c);cursor:pointer;
 }
 .tile:focus-visible{outline:2px solid var(--c);outline-offset:2px}
-.bib{
-  font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:18px;line-height:1;
-  background:#fff;color:#161B20;border:1.5px solid #161B20;border-top-width:4px;border-radius:4px;padding:4px 5px 2px;
-  min-width:46px;text-align:center;font-variant-numeric:tabular-nums;
-}
 .tile .name{font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .tile .name .bibn{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;color:var(--ink-3);font-size:13px}
 .chip{font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;border-radius:999px;background:var(--panel);border:1px solid var(--line);color:var(--ink-2)}
 .chip.meas{background:var(--ok);border-color:var(--ok);color:#fff}
 .chip.proj{border-style:dashed}
+.chip.hold{background:var(--warn);border-color:var(--warn);color:#fff}
 .chip.done{background:var(--ink);border-color:var(--ink);color:var(--panel)}
 .tile .main{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tile .main b{color:var(--ink);font-weight:600}
 .tile .right{text-align:right;font-variant-numeric:tabular-nums}
 .tile .right .big{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:20px;line-height:1}
 .tile .right .lbl{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
-.tile .note{grid-column:1/-1;font-size:11px;color:var(--warn);margin-top:2px}
+.tile .note{grid-column:1/-1;font-size:11px;color:var(--warn);margin-top:2px;white-space:normal}
 .meta{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
 .meta button{background:none;border:0;padding:0;color:var(--ch);font-size:11px;font-weight:600;cursor:pointer}
 .hint{font-size:12px;background:var(--em-soft);color:var(--ink);padding:8px 12px;border-radius:10px;display:flex;gap:10px;align-items:center}
@@ -205,46 +200,48 @@ dialog h3{margin:8px 0 0;font-size:11px;letter-spacing:.08em;text-transform:uppe
 <div id="app">
   <header class="bar">
     <div>
-      <div class="eyebrow">MAES Gent 10 Mijl · 20 Sep 2026</div>
-      <div class="live" id="live"><i></i><span id="liveText">connecting…</span></div>
+      <div class="eyebrow">MAES Gent 10 Mijl · 20 sep 2026</div>
+      <div class="live" id="live"><i></i><span id="liveText">verbinden…</span></div>
     </div>
     <div class="clock" id="clock"><small>START</small>10:45</div>
   </header>
 
   <div class="mapwrap">
-  <div id="map" role="application" aria-label="Course map"></div>
+  <div id="map" role="application" aria-label="Kaart van het parcours"></div>
   <div class="fabs" id="fabs">
-    <button class="fab" id="btnMe" title="Show my position" aria-label="Show my position"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg></button>
-    <button class="fab" id="btnFit" title="Fit course" aria-label="Fit the whole course"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
-    <button class="fab" id="btnSettings" title="Settings" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+    <button class="fab" id="btnMe" title="Mijn positie" aria-label="Mijn positie tonen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg></button>
+    <button class="fab" id="btnFit" title="Hele parcours" aria-label="Hele parcours tonen"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+    <button class="fab" id="btnSettings" title="Instellingen" aria-label="Instellingen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
   </div>
   </div>
 
   <section class="sheet" aria-live="polite">
-    <div class="hint" id="hint" hidden><span>Install: tap Share, then <b>Add to Home Screen</b>.</span><button id="hintClose" type="button">Got it</button></div>
+    <div class="hint" id="hint" hidden><span>Installeren: tik op Delen en dan op <b>Zet op beginscherm</b>.</span><button id="hintClose" type="button">Begrepen</button></div>
     <div class="strip" id="strip"></div>
     <div class="now" id="now"></div>
     <div class="tiles" id="tiles"></div>
-    <div class="meta"><span id="metaLeft">Loading course…</span><button id="btnRefresh" type="button">Refresh now</button></div>
+    <div class="meta"><span id="metaLeft">Parcours laden…</span><button id="btnRefresh" type="button">Nu vernieuwen</button></div>
   </section>
 
   <dialog id="settings">
     <form method="dialog" id="settingsForm">
-      <h2>Settings</h2>
-      <h3>Planned pace (used until the km 8.7 mat)</h3>
+      <h2>Instellingen</h2>
+      <h3>Gepland tempo (tot aan de mat op km 8,7)</h3>
       <div class="row"><label for="paceE_m">Emilie</label><input type="number" id="paceE_m" min="3" max="12" inputmode="numeric"> <span class="unit">min</span> <input type="number" id="paceE_s" min="0" max="59" inputmode="numeric"> <span class="unit">sec /km</span></div>
       <div class="row"><label for="paceC_m">Charlotte</label><input type="number" id="paceC_m" min="3" max="12" inputmode="numeric"> <span class="unit">min</span> <input type="number" id="paceC_s" min="0" max="59" inputmode="numeric"> <span class="unit">sec /km</span></div>
       <h3>Start</h3>
-      <div class="row"><label for="startDelay">Minutes after the 10:45 gun until they cross the start line (used only while no chip start time exists)</label><input type="number" id="startDelay" min="0" max="30" inputmode="numeric"> <span class="unit">min</span></div>
+      <div class="row"><label for="startDelay">Minuten na het startschot (10:45) tot ze de startlijn passeren (enkel zolang er geen chip-starttijd is)</label><input type="number" id="startDelay" min="0" max="30" inputmode="numeric"> <span class="unit">min</span></div>
+      <h3>Na de tussentijd op km 8,7</h3>
+      <div class="row"><label for="fadePct">Hoeveel trager ze de rest lopen dan hun gemeten gemiddelde</label><input type="number" id="fadePct" min="-10" max="20" inputmode="numeric"> <span class="unit">%</span></div>
       <h3>Plan</h3>
-      <div class="row"><label for="bufferMin">Minutes you want to be at a spot before the first sister arrives</label><input type="number" id="bufferMin" min="0" max="20" inputmode="numeric"> <span class="unit">min</span></div>
-      <h3>Map</h3>
-      <div class="row"><label for="showCars">Show flag and lead vehicles (GPS)</label><input type="checkbox" id="showCars"></div>
-      <h3>Rehearsal</h3>
-      <div class="row"><label for="simOn">Simulate race time</label><input type="checkbox" id="simOn"></div>
+      <div class="row"><label for="bufferMin">Minuten die je op een plek wil zijn vóór de eerste zus aankomt</label><input type="number" id="bufferMin" min="0" max="20" inputmode="numeric"> <span class="unit">min</span></div>
+      <h3>Kaart</h3>
+      <div class="row"><label for="showCars">Toon vlag- en kopwagens (GPS)</label><input type="checkbox" id="showCars"></div>
+      <h3>Oefenen</h3>
+      <div class="row"><label for="simOn">Simuleer de wedstrijdtijd</label><input type="checkbox" id="simOn"></div>
       <div class="row"><input type="range" id="simMin" min="-60" max="140" step="1"><span class="unit" id="simLabel">+30 min</span></div>
-      <p class="help">Simulation ignores the live data and moves both runners along the course at their planned pace. Turn it off on race day.</p>
-      <div class="actions"><button class="btn" type="button" id="btnCancel">Cancel</button><button class="btn primary" type="submit" id="btnSave">Save</button></div>
+      <p class="help">De simulatie negeert de live data en laat beide loopsters aan hun geplande tempo over het parcours lopen. Zet dit uit op de wedstrijddag.</p>
+      <div class="actions"><button class="btn" type="button" id="btnCancel">Annuleren</button><button class="btn primary" type="submit" id="btnSave">Opslaan</button></div>
     </form>
   </dialog>
 </div>
@@ -261,41 +258,43 @@ const CFG = {
   resultsApi: 'https://results.chronorace.be/api/',
   eventsApi: 'https://prod.chronorace.be/api/',
   raceDate: '2026-09-20',
-  gunMs: (10 * 60 + 45) * 60 * 1000,          // 10:45:00 local, ms since midnight
+  gunMs: (10 * 60 + 45) * 60 * 1000,          // 10:45:00 lokaal, ms sinds middernacht
   tz: 'Europe/Brussels',
   pollMs: 20000, carsMs: 10000,
+  holdMs: 12 * 60000,                          // hoe lang we aan de mat wachten op een ontbrekende tussentijd
   runners: [
     { bib: 944,  name: 'Emilie',    key: 'E', color: 'var(--em)', hex: '#E4572E' },
     { bib: 4861, name: 'Charlotte', key: 'C', color: 'var(--ch)', hex: '#2F7FBF' },
   ],
 };
-const DEFAULTS = { paceE: 420, paceC: 420, startDelay: 6, bufferMin: 5, showCars: true, simOn: false, simMin: 30, hintDone: false, manualStop: null };
+const DEFAULTS = { paceE: 420, paceC: 420, startDelay: 6, fadePct: 3, bufferMin: 5, showCars: true, simOn: false, simMin: 30, hintDone: false, manualStop: null };
 let settings = { ...DEFAULTS };
 try { Object.assign(settings, JSON.parse(localStorage.getItem('g10m') || '{}')); } catch (e) {}
 const saveSettings = () => { try { localStorage.setItem('g10m', JSON.stringify(settings)); } catch (e) {} };
 
-// ---------------------------------------------------------------- time
+// ---------------------------------------------------------------- tijd
 const tf = new Intl.DateTimeFormat('en-GB', { timeZone: CFG.tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
 const df = new Intl.DateTimeFormat('en-CA', { timeZone: CFG.tz, year: 'numeric', month: '2-digit', day: '2-digit' });
 function daysToRace(d = new Date()) { return Math.round((Date.parse(CFG.raceDate) - Date.parse(df.format(d))) / 86400000); }
-function localMs(d = new Date()) {                // ms since local (Brussels) midnight
+function localMs(d = new Date()) {
   const p = {}; for (const x of tf.formatToParts(d)) p[x.type] = x.value;
   return ((+p.hour % 24) * 3600 + (+p.minute) * 60 + (+p.second)) * 1000 + d.getMilliseconds();
 }
-let serverOffset = 0;                              // server clock minus phone clock, ms
+let serverOffset = 0;
 function nowMs() {
   if (settings.simOn) return CFG.gunMs + settings.simMin * 60000;
-  return localMs() + serverOffset - daysToRace() * 86400000;   // before race day the clock counts down across days
+  return localMs() + serverOffset - daysToRace() * 86400000;
 }
 const pad = (n) => String(n).padStart(2, '0');
 function fmtClock(ms) { if (ms == null || !isFinite(ms)) return '–'; const s = Math.round(ms / 1000); return `${Math.floor(s / 3600)}:${pad(Math.floor(s / 60) % 60)}`; }
 function fmtDur(ms) { if (ms == null) return '–'; const s = Math.max(0, Math.round(ms / 1000)); return `${Math.floor(s / 3600)}:${pad(Math.floor(s / 60) % 60)}:${pad(s % 60)}`; }
 function fmtPace(msPerKm) { const s = Math.round(msPerKm / 1000); return `${Math.floor(s / 60)}:${pad(s % 60)} /km`; }
-function fmtIn(ms) { const m = Math.round(ms / 60000); return m <= 0 ? 'now' : m < 60 ? `in ${m} min` : `in ${Math.floor(m / 60)} h ${pad(m % 60)}`; }
+function fmtIn(ms) { const m = Math.round(ms / 60000); return m <= 0 ? 'nu' : m < 60 ? `over ${m} min` : `over ${Math.floor(m / 60)} u ${pad(m % 60)}`; }
+const km = (m, d = 1) => (m / 1000).toFixed(d).replace('.', ',');
 const parseHms = (s) => { const m = /(\d+):(\d\d):(\d\d)/.exec(String(s || '')); return m ? ((+m[1]) * 3600 + (+m[2]) * 60 + (+m[3])) * 1000 : null; };
 const strip = (s) => String(s == null ? '' : s).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 
-// ---------------------------------------------------------------- route + plan
+// ---------------------------------------------------------------- parcours + plan
 let R = null, PLAN = null, TOTAL = 16270, MAT_M = 8700;
 function llAtM(m) {
   const target = Math.max(0, Math.min(1, m / TOTAL)) * R.measured_m;
@@ -312,11 +311,6 @@ function segment(m0, m1) {
   out.push(llAtM(Math.max(m0, m1)));
   return out;
 }
-function nearestM(lat, lon) {
-  let best = { d: 1e9, m: 0 };
-  for (const p of R.track) { const d = hav(lat, lon, p[0], p[1]); if (d < best.d) best = { d, m: p[2] / R.measured_m * TOTAL }; }
-  return best;
-}
 function hav(a, b, c, d) { const r = Math.PI / 180, x = (c - a) * r, y = (d - b) * r; const h = Math.sin(x / 2) ** 2 + Math.cos(a * r) * Math.cos(c * r) * Math.sin(y / 2) ** 2; return 12742000 * Math.asin(Math.sqrt(h)); }
 
 // ---------------------------------------------------------------- live data
@@ -329,8 +323,8 @@ function parseTable(data) {
   const groups = cols.filter((c) => c.GroupDisplayName && !/categ/i.test(c.GroupDisplayName));
   const g = groups[0] ? groups[0].GroupDisplayName : null;
   if (g) {
-    const km = /([\d]+(?:[.,]\d+)?)\s*k/i.exec(g) || /km\s*([\d]+(?:[.,]\d+)?)/i.exec(g);
-    if (km) { live.splitDist = Math.round(parseFloat(km[1].replace(',', '.')) * 1000); live.splitLabel = g; }
+    const m = /([\d]+(?:[.,]\d+)?)\s*k/i.exec(g) || /km\s*([\d]+(?:[.,]\d+)?)/i.exec(g);
+    if (m) { live.splitDist = Math.round(parseFloat(m[1].replace(',', '.')) * 1000); live.splitLabel = g; }
   }
   const gPos = groups.find((c) => /pos$/i.test(c.Name)), gTime = groups.find((c) => /time$/i.test(c.Name));
   const rows = (data.Groups || []).flatMap((x) => x.SlaveRows || []);
@@ -355,8 +349,8 @@ async function poll() {
   const t0 = localMs();
   const results = await Promise.allSettled([getJson(tUrl), ...CFG.runners.map((r) => getJson(dUrl(r.bib)))]);
   let ok = false;
-  if (results[0].status === 'fulfilled') { try { live.table = parseTable(results[0].value); ok = true; } catch (e) { live.lastErr = 'table: ' + e.message; } }
-  else live.lastErr = 'table: ' + results[0].reason.message;
+  if (results[0].status === 'fulfilled') { try { live.table = parseTable(results[0].value); ok = true; } catch (e) { live.lastErr = 'tabel: ' + e.message; } }
+  else live.lastErr = 'tabel: ' + results[0].reason.message;
   CFG.runners.forEach((r, i) => {
     const res = results[i + 1];
     if (res.status !== 'fulfilled') { live.lastErr = 'detail: ' + res.reason.message; return; }
@@ -372,19 +366,22 @@ async function poll() {
 }
 async function pollCars() {
   if (!settings.showCars) { drawCars(); return; }
-  try { live.cars = await getJson(`${CFG.eventsApi}gps/get/${CFG.eventId}`); } catch (e) { /* keep last */ }
+  try { live.cars = await getJson(`${CFG.eventsApi}gps/get/${CFG.eventId}`); } catch (e) { /* laatste behouden */ }
   drawCars();
 }
-const CAR_NAMES = { GV: 'Green flag · front of race', RV: 'Red flag · back of race', GV5: 'Green flag 5 Mijl', H2: '2nd man', H3: '3rd man', D1: '1st woman', D2: '2nd woman', D3: '3rd woman', P1: 'Course car 1', P2: 'Course car 2', P3: 'Course car 3', P4: 'Course car 4' };
+const CAR_NAMES = { GV: 'Groene vlag · kop van de wedstrijd', RV: 'Rode vlag · staart van de wedstrijd', GV5: 'Groene vlag 5 Mijl', H2: '2e heer', H3: '3e heer', D1: '1e dame', D2: '2e dame', D3: '3e dame', P1: 'Parcourswagen 1', P2: 'Parcourswagen 2', P3: 'Parcourswagen 3', P4: 'Parcourswagen 4' };
 let carCfg = null;
 async function loadCarConfig() { try { carCfg = await getJson(`${CFG.eventsApi}gps/config/${CFG.eventId}`); } catch (e) { carCfg = null; } }
 
-// ---------------------------------------------------------------- runner model
+// ---------------------------------------------------------------- loopstermodel
+// Fasen: waiting (voor de start), starting (schot gevallen, nog geen startchip), running, finished.
+// Bron van het tempo: planned (instelling), implied (nog geen tussentijd hoewel verwacht), measured (tussentijd van de mat).
 function model(r) {
   const now = nowMs(), d = live.detail[r.bib], t = live.table[r.bib] || {};
-  const planned = (r.key === 'E' ? settings.paceE : settings.paceC) * 1000; // ms per km
+  const planned = (r.key === 'E' ? settings.paceE : settings.paceC) * 1000;
   const matM = live.splitDist || MAT_M;
-  const st = { r, now, phase: 'waiting', distM: 0, pace: planned, source: 'planned', startMs: null, startSource: null, notes: [], t, matM };
+  const fade = 1 + settings.fadePct / 100;
+  const st = { r, now, phase: 'waiting', distM: 0, pace: planned, source: 'planned', startMs: null, startSource: null, notes: [], t, matM, held: false };
   if (settings.simOn) {
     st.startMs = CFG.gunMs + settings.startDelay * 60000; st.startSource = 'assumed';
   } else {
@@ -392,16 +389,24 @@ function model(r) {
     const splits = (d && d.splits || []).filter((s) => s.Time > 0);
     const inter = splits.filter((s) => s.Location !== 'reel');
     const fin = splits.find((s) => s.Location === 'reel');
-    if (!inter.length && t.splitTimeMs) inter.push({ DisplayName: live.splitLabel || 'split', Time: t.splitTimeMs, Pos: t.splitPos, fromTable: true });
+    if (!inter.length && t.splitTimeMs) inter.push({ DisplayName: live.splitLabel || 'tussentijd', Time: t.splitTimeMs, Pos: t.splitPos, fromTable: true });
     st.inter = inter;
     const finishTime = fin ? fin.Time : (d && d.Location === 'reel' && d.Time > 0 ? d.Time : t.nettoMs);
     if (finishTime) {
-      st.phase = 'finished'; st.distM = TOTAL; st.finishTime = finishTime; st.pace = finishTime / (TOTAL / 1000); st.source = 'measured';
+      st.phase = 'finished'; st.distM = TOTAL; st.finishTime = finishTime; st.pace = finishTime / (TOTAL / 1000); st.avgPace = st.pace; st.source = 'measured';
       st.finishClock = st.startMs != null ? st.startMs + finishTime : null; st.pos = t.pos; st.catRank = t.catRank;
       return st;
     }
-    if (inter.length) { const last = inter[inter.length - 1]; st.pace = last.Time / (matM / 1000); st.source = 'measured'; st.lastSplit = last; }
-    if (d && d.Status && d.Status !== 'DNS' && d.Status !== 'OK') st.notes.push('Status from timing: ' + d.Status);
+    if (inter.length) {
+      const last = inter[inter.length - 1];
+      st.lastSplit = last;
+      st.avgPace = last.Time / (matM / 1000);                    // gemeten gemiddelde tot aan de mat
+      st.pace = st.avgPace * fade;                               // verwacht tempo voor de rest
+      st.source = 'measured';
+      if (st.startMs == null && last.Finish > 0) { st.startMs = last.Finish - last.Time; st.startSource = 'chip'; }
+      st.matClock = last.Finish > 0 ? last.Finish : (st.startMs != null ? st.startMs + last.Time : null);
+    }
+    if (d && d.Status && d.Status !== 'DNS' && d.Status !== 'OK') st.notes.push('Status van de tijdopname: ' + d.Status);
   }
   if (!st.startMs) {
     if (now >= CFG.gunMs + settings.startDelay * 60000) { st.startMs = CFG.gunMs + settings.startDelay * 60000; st.startSource = 'assumed'; }
@@ -410,28 +415,53 @@ function model(r) {
   const elapsed = now - st.startMs;
   if (elapsed < 0) { st.phase = 'waiting'; st.assumedStart = st.startMs; return st; }
   st.phase = 'running'; st.elapsed = elapsed;
-  st.distM = Math.min(TOTAL, elapsed / st.pace * 1000);
-  st.distFast = Math.min(TOTAL, elapsed / Math.max(60000, st.pace - 20000) * 1000);
-  st.distSlow = Math.min(TOTAL, elapsed / (st.pace + 20000) * 1000);
-  st.etaMat = st.startMs + st.pace * matM / 1000;
-  st.etaFinish = st.startMs + st.pace * TOTAL / 1000;
-  if (st.source !== 'measured' && st.distM > matM + 400 && !settings.simOn) st.notes.push(`Projected past the km ${(matM / 1000).toFixed(1)} mat, no split received yet`);
-  if (st.distM >= TOTAL && !settings.simOn) st.notes.push('Projected finish reached, waiting for the chip time');
+
+  let anchorClock = st.startMs;                                  // moment + afstand vanwaar we vooruit rekenen
+  let anchorM = 0;
+  if (st.source === 'measured' && st.matClock != null) {
+    anchorClock = st.matClock; anchorM = matM;                   // verankerd aan het passeren van de mat
+  } else if (!settings.simOn && elapsed / st.pace * 1000 >= matM - 60) {
+    // Nog geen tussentijd: dan zijn ze de mat nog niet voorbij. Hou de stip vlak voor de mat
+    // en leid het tempo af uit de tijd die ze er minstens over doen.
+    const expectedMat = st.startMs + planned * matM / 1000;
+    const impliedPace = Math.max(planned, elapsed / (matM / 1000));
+    if (now - expectedMat < CFG.holdMs) {
+      st.pace = impliedPace; st.source = 'implied'; st.held = true;
+      st.notes.push(`Nog geen tussentijd op km ${km(matM)}: ze zijn trager dan gepland (minstens ${fmtPace(impliedPace)})`);
+    } else {
+      // Tussentijd blijft uit: waarschijnlijk gemiste chiplezing. Ga verder aan het afgeleide tempo.
+      anchorClock = expectedMat + CFG.holdMs; anchorM = matM;
+      st.pace = (anchorClock - st.startMs) / (matM / 1000) * fade; st.source = 'implied';
+      st.notes.push(`Tussentijd op km ${km(matM)} ontbreekt (gemiste lezing?). Schatting loopt verder aan ${fmtPace(st.pace)}`);
+    }
+  }
+  const since = Math.max(0, now - anchorClock);
+  st.distM = st.held ? matM - 60 : Math.min(TOTAL, anchorM + since / st.pace * 1000);
+  if (!st.held && st.distM >= TOTAL - 40) {
+    st.distM = TOTAL - 40; st.held = true;
+    if (!settings.simOn) st.notes.push('Geschatte aankomst bereikt, wachten op de chiptijd');
+  }
+  const spread = 20000;                                          // ± 20 s/km onzekerheidsband
+  st.distFast = Math.min(TOTAL, anchorM + since / Math.max(60000, st.pace - spread) * 1000);
+  st.distSlow = Math.max(0, anchorM + since / (st.pace + spread) * 1000);
+  st.etaMat = st.distM >= matM ? null : now + (matM - st.distM) * st.pace / 1000;
+  st.etaFinish = now + (TOTAL - st.distM) * st.pace / 1000;
   return st;
 }
-// When does runner state s reach course distance m? {t: clock ms, passed: bool, kind: 'chip'|'measured'|'projected'}
+// Wanneer bereikt loopster s afstand m? {t, passed, kind}
 function passAt(s, m) {
   if (s.phase === 'finished') {
     if (m >= TOTAL - 1) return { t: s.finishClock, passed: true, kind: 'chip' };
-    return { t: s.startMs != null ? s.startMs + s.pace * m / 1000 : null, passed: true, kind: 'measured' };
+    return { t: s.startMs != null ? s.startMs + s.avgPace * m / 1000 : null, passed: true, kind: 'measured' };
   }
-  const start = s.startMs != null ? s.startMs : s.assumedStart;
-  const t = start + s.pace * m / 1000;
-  const passed = s.phase === 'running' && s.distM > m + 120;
-  return { t, passed, kind: s.source === 'measured' ? 'measured' : 'projected' };
+  if (s.phase === 'running') {
+    if (m <= s.distM - 120) return { t: s.startMs + (s.avgPace || s.pace) * m / 1000, passed: true, kind: s.source === 'measured' ? 'measured' : 'projected' };
+    return { t: s.now + Math.max(0, m - s.distM) * s.pace / 1000, passed: false, kind: s.source === 'measured' ? 'measured' : 'projected' };
+  }
+  return { t: s.assumedStart + s.pace * m / 1000, passed: false, kind: 'projected' };
 }
 
-// ---------------------------------------------------------------- plan model
+// ---------------------------------------------------------------- planmodel
 function planModel(states) {
   const stops = PLAN.stops.map((s, i) => ({ ...s, i, legIn: PLAN.legs.find((l) => l.to === s.id) || null, legOut: PLAN.legs.find((l) => l.frm === s.id) || null }));
   const now = states[0].now, buffer = settings.bufferMin * 60000;
@@ -444,13 +474,12 @@ function planModel(states) {
       st.done = st.pass.every((p) => p.passed);
     }
   }
-  // leave-by for each stop = next view stop's arriveBy minus the walk; base/pause stops are "done" once you should have left
   for (let i = 0; i < stops.length; i++) {
     const st = stops[i], next = stops[i + 1];
     if (next) {
       const target = next.kind === 'view' ? next.arriveBy : (nextViewArrive(stops, i + 1) - (walkTo(stops, i + 1) || 0));
       st.leaveBy = target - (st.legOut ? st.legOut.min * 60000 : 0);
-      if (st.kind === 'view') st.slack = st.leaveBy - st.last;         // minutes between last sister passing and having to leave
+      if (st.kind === 'view') st.slack = st.leaveBy - st.last;
     }
     if (st.kind !== 'view') st.done = st.leaveBy != null && now > st.leaveBy;
   }
@@ -461,15 +490,14 @@ function planModel(states) {
 function nextViewArrive(stops, i) { for (let k = i; k < stops.length; k++) if (stops[k].kind === 'view') return stops[k].arriveBy; return Infinity; }
 function walkTo(stops, i) { let ms = 0; for (let k = i; k < stops.length && stops[k].kind !== 'view'; k++) ms += (stops[k].legOut ? stops[k].legOut.min * 60000 : 0); return ms; }
 
-// ---------------------------------------------------------------- map
-let map, tiles, layers = { runners: {}, bands: {}, cars: null, me: null, pins: {}, legs: null }, meWatch = null, mePos = null, followBib = null;
+// ---------------------------------------------------------------- kaart
+let map, layers = { runners: {}, bands: {}, cars: null, me: null, pins: {}, legs: null }, meWatch = null, mePos = null, followBib = null;
 function buildMap() {
   map = L.map('map', { zoomControl: false, attributionControl: true });
-  tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
   const line = R.track.map((p) => [p[0], p[1]]);
   L.polyline(line, { color: '#fff', weight: 7, opacity: .9 }).addTo(map);
   L.polyline(line, { color: '#161B20', weight: 3, opacity: .9 }).addTo(map);
-  // walking legs
   layers.legs = L.layerGroup().addTo(map);
   for (const l of PLAN.legs) L.polyline(l.line, { color: '#7B4DBE', weight: 3, opacity: .8, dashArray: '2 7', lineCap: 'round' }).addTo(layers.legs);
   const kmLayer = L.layerGroup().addTo(map);
@@ -479,9 +507,8 @@ function buildMap() {
     const sym = { start: 'S', finish: 'F', mat: '⏱', aid: '💧' }[p.type];
     const size = p.type === 'mat' ? 26 : 22;
     L.marker(p.ll, { icon: L.divIcon({ className: '', html: `<div class="poi ${p.type}" title="${p.name}">${sym}</div>`, iconSize: [size, size], iconAnchor: [size / 2, size / 2] }) })
-      .bindPopup(`<b>${p.name}</b><br>km ${(p.m / 1000).toFixed(2)}`).addTo(map);
+      .bindPopup(`<b>${p.name}</b><br>km ${km(p.m, 2)}`).addTo(map);
   }
-  // plan pins
   PLAN.stops.forEach((s, i) => {
     layers.pins[s.id] = L.marker(s.ll, { icon: pinIcon(i, ''), zIndexOffset: 500 }).bindPopup(`<b>${i + 1}. ${s.name}</b><br>${s.note}`).addTo(map)
       .on('click', () => { settings.manualStop = i; saveSettings(); render(); });
@@ -496,9 +523,10 @@ function buildMap() {
   map.on('dragstart', () => { followBib = null; });
 }
 function pinIcon(i, cls) { const s = cls === 'cur' ? 34 : 28; return L.divIcon({ className: '', iconSize: [s, s], iconAnchor: [s * .15, s * .95], html: `<div class="pin ${cls}"><span>${i + 1}</span></div>` }); }
-function runnerIcon(r, mode, isLive) {
-  return L.divIcon({ className: '', iconSize: [34, 34], iconAnchor: [17, 17],
-    html: `<div class="rm ${mode} ${isLive ? 'live' : ''}" style="--c:${r.hex}"><div class="halo"></div><div class="dot">${r.key}</div><div class="tag">${r.name}</div></div>` });
+function runnerIcon(r, mode, isLive, dx = 0, tagUp = false) {
+  // dx: zijwaartse verschuiving in pixels als de twee stippen samenvallen; tagUp: naam boven i.p.v. onder de stip
+  return L.divIcon({ className: '', iconSize: [34, 34], iconAnchor: [17 - dx, 17],
+    html: `<div class="rm ${mode} ${isLive ? 'live' : ''} ${tagUp ? 'up' : ''}" style="--c:${r.hex}"><div class="halo"></div><div class="dot">${r.key}</div><div class="tag">${r.name}</div></div>` });
 }
 function drawCars() {
   layers.cars.clearLayers();
@@ -512,13 +540,13 @@ function drawCars() {
     if (hav(c.Lat, c.Lon, R.track[0][0], R.track[0][1]) > 6000) continue;
     const color = bib === 'GV' ? '#2E9E5B' : bib === 'RV' ? '#D14343' : '#7B8794';
     L.marker([c.Lat, c.Lon], { icon: L.divIcon({ className: '', iconSize: [26, 26], iconAnchor: [13, 13], html: `<div class="car" style="--c:${color}">${bib}</div>` }) })
-      .bindPopup(`<b>${CAR_NAMES[bib] || name}</b><br>${Math.round(c.Speed || 0)} km/h · ${Math.round(age / 1000)} s ago`).addTo(layers.cars);
+      .bindPopup(`<b>${CAR_NAMES[bib] || name}</b><br>${Math.round(c.Speed || 0)} km/u · ${Math.round(age / 1000)} s geleden`).addTo(layers.cars);
   }
 }
 function toggleMe() {
   const btn = document.getElementById('btnMe');
   if (meWatch != null) { navigator.geolocation.clearWatch(meWatch); meWatch = null; mePos = null; layers.me.clearLayers(); btn.classList.remove('on'); render(); return; }
-  if (!navigator.geolocation) { alert('No location access on this device.'); return; }
+  if (!navigator.geolocation) { alert('Geen toegang tot locatie op dit toestel.'); return; }
   btn.classList.add('on');
   meWatch = navigator.geolocation.watchPosition((p) => {
     mePos = { lat: p.coords.latitude, lon: p.coords.longitude, acc: p.coords.accuracy };
@@ -530,92 +558,91 @@ function toggleMe() {
   followBib = 'me';
 }
 
-// ---------------------------------------------------------------- render
+// ---------------------------------------------------------------- weergave
 const $ = (id) => document.getElementById(id);
 function render() {
   const now = nowMs();
   const clock = $('clock');
   const dtr = settings.simOn ? 0 : daysToRace();
-  if (dtr > 1) clock.innerHTML = `<small>IN ${dtr} DAYS</small>10:45`;
-  else if (now < CFG.gunMs) clock.innerHTML = `<small>${dtr === 1 ? 'TOMORROW · IN' : 'START IN'}</small>${fmtDur(CFG.gunMs - now)}`;
-  else clock.innerHTML = `<small>RACE</small>${fmtDur(now - CFG.gunMs)}`;
+  if (dtr > 1) clock.innerHTML = `<small>OVER ${dtr} DAGEN</small>10:45`;
+  else if (now < CFG.gunMs) clock.innerHTML = `<small>${dtr === 1 ? 'MORGEN · OVER' : 'START OVER'}</small>${fmtDur(CFG.gunMs - now)}`;
+  else clock.innerHTML = `<small>WEDSTRIJD</small>${fmtDur(now - CFG.gunMs)}`;
   const liveEl = $('live'), liveText = $('liveText');
-  if (settings.simOn) { liveEl.className = 'live sim'; liveText.textContent = `simulation · ${fmtClock(now)}`; }
-  else if (live.lastErr && (!live.lastOk || Date.now() - live.lastOk > 90000)) { liveEl.className = 'live err'; liveText.textContent = 'no data · ' + live.lastErr; }
-  else if (live.lastOk) { liveEl.className = 'live ok'; liveText.textContent = `live · ${Math.round((Date.now() - live.lastOk) / 1000)} s ago`; }
-  else { liveEl.className = 'live'; liveText.textContent = 'connecting…'; }
+  if (settings.simOn) { liveEl.className = 'live sim'; liveText.textContent = `simulatie · ${fmtClock(now)}`; }
+  else if (live.lastErr && (!live.lastOk || Date.now() - live.lastOk > 90000)) { liveEl.className = 'live err'; liveText.textContent = 'geen data · ' + live.lastErr; }
+  else if (live.lastOk) { liveEl.className = 'live ok'; liveText.textContent = `live · ${Math.round((Date.now() - live.lastOk) / 1000)} s geleden`; }
+  else { liveEl.className = 'live'; liveText.textContent = 'verbinden…'; }
 
   const states = CFG.runners.map(model);
   const pm = planModel(states);
 
-  // --- runners on the map
-  for (const s of states) {
-    const r = s.r, mode = s.source === 'measured' ? 'meas' : 'proj', ll = llAtM(s.distM);
-    layers.runners[r.bib].setLatLng(ll).setIcon(runnerIcon(r, s.phase === 'finished' ? 'meas' : mode, s.phase === 'running'));
-    layers.bands[r.bib].setLatLngs(s.phase === 'running' && s.distSlow != null ? segment(s.distSlow, s.distFast) : []);
+  // Samenvallende stippen (zelfde plek op het parcours) uit elkaar schuiven zodat beide zichtbaar blijven.
+  const lls = states.map((s) => llAtM(s.distM));
+  const together = states.length === 2 && hav(lls[0][0], lls[0][1], lls[1][0], lls[1][1]) < 60;
+  states.forEach((s, i) => {
+    const r = s.r, mode = s.source === 'measured' ? 'meas' : 'proj', ll = lls[i];
+    const dx = together ? (i === 0 ? -19 : 19) : 0;
+    layers.runners[r.bib].setLatLng(ll).setIcon(runnerIcon(r, s.phase === 'finished' ? 'meas' : mode, s.phase === 'running', dx, together && i === 0));
+    layers.bands[r.bib].setLatLngs(s.phase === 'running' && !s.held && s.distSlow != null ? segment(s.distSlow, s.distFast) : []);
     if (followBib === r.bib) map.panTo(ll);
-  }
-  // --- plan pins
+  });
   pm.stops.forEach((st, i) => layers.pins[st.id].setIcon(pinIcon(i, i === pm.cur ? 'cur' : st.done ? 'done' : '')));
 
-  // --- plan strip
-  const strip = $('strip'); strip.innerHTML = '';
+  const stripEl = $('strip'); stripEl.innerHTML = '';
   pm.stops.forEach((st, i) => {
     const el = document.createElement('button'); el.type = 'button';
     el.className = 'stop' + (i === pm.cur ? ' cur' : st.done ? ' done' : '');
-    const when = st.kind === 'view' ? fmtClock(st.first) : st.leaveBy != null ? `leave ${fmtClock(st.leaveBy)}` : '';
+    const when = st.kind === 'view' ? fmtClock(st.first) : st.leaveBy != null ? `vertrek ${fmtClock(st.leaveBy)}` : '';
     el.innerHTML = `<i>${i + 1}</i>${st.short}${when ? ` <b>${when}</b>` : ''}`;
     el.addEventListener('click', () => { settings.manualStop = i; saveSettings(); followBib = null; map.setView(st.ll, Math.max(map.getZoom(), 15)); render(); });
-    strip.appendChild(el);
+    stripEl.appendChild(el);
   });
-  const curEl = strip.children[pm.cur]; if (curEl && !strip.dataset.scrolled) { curEl.scrollIntoView({ inline: 'center', block: 'nearest' }); }
+  const curEl = stripEl.children[pm.cur]; if (curEl && !stripEl.dataset.scrolled) curEl.scrollIntoView({ inline: 'center', block: 'nearest' });
 
-  // --- now card
   const st = pm.stops[pm.cur], next = pm.stops[pm.cur + 1];
-  let html = `<div class="h"><b>${pm.cur + 1}. ${st.name}</b>${st.kind === 'view' ? `<span>course km ${(st.view_m / 1000).toFixed(1)}</span>` : ''}</div>`;
+  let html = `<div class="h"><b>${pm.cur + 1}. ${st.name}</b>${st.kind === 'view' ? `<span>parcours km ${km(st.view_m)}</span>` : ''}</div>`;
   if (st.kind === 'view') {
     html += `<div class="pass">` + st.pass.map((p, i) => {
-      const r = CFG.runners[i], lab = p.passed ? 'passed' : p.kind === 'chip' ? 'finished' : '';
-      return `<span class="${r.key}"><em>${r.name}</em> ${p.passed ? 'passed ~' : '~'}${fmtClock(p.t)}${!p.passed && p.t > now ? ` <small>(${fmtIn(p.t - now)})</small>` : ''}${p.kind === 'projected' && !p.passed ? '*' : ''}</span>`;
+      const r = CFG.runners[i];
+      return `<span class="${r.key}"><em>${r.name}</em> ${p.passed ? 'gepasseerd ~' : '~'}${fmtClock(p.t)}${!p.passed && p.t > now ? ` <small>(${fmtIn(p.t - now)})</small>` : ''}${p.kind === 'projected' && !p.passed ? '*' : ''}</span>`;
     }).join('') + `</div>`;
-    if (!st.done) html += `<div class="next">Be here by <b>${fmtClock(st.arriveBy)}</b>${st.pass.some((p) => p.kind === 'projected' && !p.passed) ? ' · * projected from planned pace' : ''}</div>`;
+    if (!st.done) html += `<div class="next">Wees hier tegen <b>${fmtClock(st.arriveBy)}</b>${st.pass.some((p) => p.kind === 'projected' && !p.passed) ? ' · * geschat op basis van het geplande tempo' : ''}</div>`;
   } else if (st.id === 'park') {
     const w = PLAN.runners_walk;
-    html += `<div class="next">Gun at <b>10:45</b> · corrals open 09:30 · they walk <b>${w.min.toFixed(0)} min</b> (${w.m} m) to the start on the Strandlaan.</div>`;
+    html += `<div class="next">Startschot om <b>10:45</b> · startvakken open vanaf 09:30 · zij wandelen <b>${w.min.toFixed(0)} min</b> (${w.m} m) naar de start op de Strandlaan.</div>`;
   }
   if (next) {
     const leg = st.legOut;
-    const walk = leg ? `walk <b>${leg.min.toFixed(0)} min</b> (${leg.m} m) to ${next.name}` : `go to ${next.name}`;
-    const target = next.kind === 'view' ? `they pass ~<b>${fmtClock(next.first)}</b>` : '';
-    html += `<div class="next">Next: ${walk}${target ? ', ' + target : ''}. Leave here by <b>${fmtClock(st.leaveBy)}</b>${st.leaveBy - now > 0 ? ` (${fmtIn(st.leaveBy - now)})` : ' · <b>now</b>'}.</div>`;
+    const walk = leg ? `wandel <b>${leg.min.toFixed(0)} min</b> (${leg.m} m) naar ${next.name}` : `ga naar ${next.name}`;
+    const target = next.kind === 'view' ? `ze passeren ~<b>${fmtClock(next.first)}</b>` : '';
+    html += `<div class="next">Daarna: ${walk}${target ? ', ' + target : ''}. Vertrek hier tegen <b>${fmtClock(st.leaveBy)}</b>${st.leaveBy - now > 0 ? ` (${fmtIn(st.leaveBy - now)})` : ' · <b>nu</b>'}.</div>`;
     if (st.kind === 'view' && st.slack != null) {
       const m = Math.round(st.slack / 60000);
-      if (m < 0) html += `<div class="warn">Tight: to make ${next.short} you would have to leave ${-m} min before the last sister passes here. Leave the moment the second one has gone by, or skip ahead.</div>`;
-      else if (m < 4) html += `<div class="warn">Only ${m} min to spare after the second sister passes. Leave immediately.</div>`;
+      if (m < 0) html += `<div class="warn">Krap: om ${next.short} te halen zou je ${-m} min moeten vertrekken vóór de laatste zus hier passeert. Vertrek zodra de tweede voorbij is, of sla een stop over.</div>`;
+      else if (m < 4) html += `<div class="warn">Nog maar ${m} min speling nadat de tweede zus passeert. Vertrek meteen.</div>`;
     }
   } else if (st.kind === 'view') {
-    html += `<div class="next">Last stop. Meet them past the finish line for the medal, AA-drink and protein bar.</div>`;
+    html += `<div class="next">Laatste stop. Wacht hen op voorbij de finish voor de medaille, AA-drink en proteïnereep.</div>`;
   }
   if (mePos) {
     const dHere = hav(mePos.lat, mePos.lon, st.ll[0], st.ll[1]);
-    html += `<div class="note">You are ${dHere < 1000 ? Math.round(dHere) + ' m' : (dHere / 1000).toFixed(1) + ' km'} from this stop.</div>`;
+    html += `<div class="note">Je bent ${dHere < 1000 ? Math.round(dHere) + ' m' : km(dHere) + ' km'} van deze stop.</div>`;
   } else if (!html.includes('class="warn"')) html += `<div class="note">${st.note}</div>`;
-  if (settings.manualStop != null) html += `<button class="auto" type="button" id="btnAuto">Back to automatic stop selection</button>`;
+  if (settings.manualStop != null) html += `<button class="auto" type="button" id="btnAuto">Terug naar automatische stopkeuze</button>`;
   $('now').innerHTML = html;
   const ba = $('btnAuto'); if (ba) ba.addEventListener('click', () => { settings.manualStop = null; saveSettings(); render(); });
 
-  // --- runner tiles
   const tiles = $('tiles'); tiles.innerHTML = '';
   for (const s of states) {
     const r = s.r;
     let chip, main, big, lbl;
-    if (s.phase === 'waiting') { chip = '<span class="chip">Before start</span>'; main = `Planned ${fmtPace(s.pace)} · finish ~${fmtClock(s.assumedStart + s.pace * TOTAL / 1000)}`; big = '10:45'; lbl = 'gun'; }
-    else if (s.phase === 'starting') { chip = '<span class="chip">Starting</span>'; main = `Waiting for start chip (+${settings.startDelay} min assumed)`; big = fmtDur(s.now - CFG.gunMs); lbl = 'since gun'; }
-    else if (s.phase === 'finished') { chip = '<span class="chip done">Finished</span>'; main = `${fmtPace(s.pace)}${s.pos && s.pos !== '-' ? ` · overall ${s.pos}` : ''}${s.catRank ? ` · cat ${s.catRank}` : ''}`; big = fmtDur(s.finishTime); lbl = 'finish'; }
+    if (s.phase === 'waiting') { chip = '<span class="chip">Voor de start</span>'; main = `Gepland ${fmtPace(s.pace)} · finish ~${fmtClock(s.assumedStart + s.pace * TOTAL / 1000)}`; big = '10:45'; lbl = 'startschot'; }
+    else if (s.phase === 'starting') { chip = '<span class="chip">Aan het starten</span>'; main = `Wachten op de startchip (+${settings.startDelay} min verondersteld)`; big = fmtDur(s.now - CFG.gunMs); lbl = 'sinds het schot'; }
+    else if (s.phase === 'finished') { chip = '<span class="chip done">Gefinisht</span>'; main = `${fmtPace(s.pace)}${s.pos && s.pos !== '-' ? ` · totaal ${s.pos}` : ''}${s.catRank ? ` · cat. ${s.catRank}` : ''}`; big = fmtDur(s.finishTime); lbl = 'chiptijd'; }
     else {
-      chip = s.source === 'measured' ? `<span class="chip meas">chip pace</span>` : `<span class="chip proj">${s.startSource === 'assumed' ? 'projected · start?' : 'projected'}</span>`;
-      main = `<b>km ${(s.distM / 1000).toFixed(1)}</b> · ${fmtPace(s.pace)} · ${s.lastSplit ? `mat ${fmtDur(s.lastSplit.Time)}` : `start ${fmtClock(s.startMs)}${s.startSource === 'assumed' ? '?' : ''}`}`;
-      big = fmtClock(s.etaFinish); lbl = 'finish ETA';
+      chip = s.source === 'measured' ? `<span class="chip meas">gemeten</span>` : s.source === 'implied' ? `<span class="chip hold">${s.held ? 'aan de mat' : 'afgeleid'}</span>` : `<span class="chip proj">${s.startSource === 'assumed' ? 'geschat · start?' : 'geschat'}</span>`;
+      main = `<b>km ${km(s.distM)}</b> · ${fmtPace(s.pace)}` + (s.lastSplit ? ` (mat ${fmtDur(s.lastSplit.Time)} = ${fmtPace(s.avgPace)})` : ` · start ${fmtClock(s.startMs)}${s.startSource === 'assumed' ? '?' : ''}`);
+      big = fmtClock(s.etaFinish); lbl = 'verw. finish';
     }
     const notes = s.notes.length ? `<div class="note">${s.notes.join(' · ')}</div>` : '';
     const el = document.createElement('div');
@@ -626,14 +653,14 @@ function render() {
     tiles.appendChild(el);
   }
 
-  $('metaLeft').textContent = settings.simOn ? `Simulation · planned paces only` : `ACN/Chronorace · ${CFG.table} every ${CFG.pollMs / 1000} s${serverOffset ? ` · clock ${serverOffset > 0 ? '+' : ''}${Math.round(serverOffset / 1000)} s` : ''}`;
+  $('metaLeft').textContent = settings.simOn ? `Simulatie · enkel geplande tempo's` : `ACN/Chronorace · ${CFG.table} elke ${CFG.pollMs / 1000} s${serverOffset ? ` · klok ${serverOffset > 0 ? '+' : ''}${Math.round(serverOffset / 1000)} s` : ''}`;
 }
 
-// ---------------------------------------------------------------- settings UI
+// ---------------------------------------------------------------- instellingen
 function openSettings() {
   $('paceE_m').value = Math.floor(settings.paceE / 60); $('paceE_s').value = settings.paceE % 60;
   $('paceC_m').value = Math.floor(settings.paceC / 60); $('paceC_s').value = settings.paceC % 60;
-  $('startDelay').value = settings.startDelay; $('bufferMin').value = settings.bufferMin; $('showCars').checked = settings.showCars;
+  $('startDelay').value = settings.startDelay; $('fadePct').value = settings.fadePct; $('bufferMin').value = settings.bufferMin; $('showCars').checked = settings.showCars;
   $('simOn').checked = settings.simOn; $('simMin').value = settings.simMin; $('simLabel').textContent = `${settings.simMin >= 0 ? '+' : ''}${settings.simMin} min`;
   $('settings').showModal();
 }
@@ -643,7 +670,7 @@ $('settingsForm').addEventListener('submit', () => {
   const n = (id, lo, hi, def) => { const v = parseInt($(id).value, 10); return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : def; };
   settings.paceE = n('paceE_m', 3, 12, 7) * 60 + n('paceE_s', 0, 59, 0);
   settings.paceC = n('paceC_m', 3, 12, 7) * 60 + n('paceC_s', 0, 59, 0);
-  settings.startDelay = n('startDelay', 0, 30, 6); settings.bufferMin = n('bufferMin', 0, 20, 5); settings.showCars = $('showCars').checked;
+  settings.startDelay = n('startDelay', 0, 30, 6); settings.fadePct = n('fadePct', -10, 20, 3); settings.bufferMin = n('bufferMin', 0, 20, 5); settings.showCars = $('showCars').checked;
   settings.simOn = $('simOn').checked; settings.simMin = n('simMin', -60, 140, 30);
   saveSettings(); pollCars(); poll();
 });
@@ -654,13 +681,13 @@ $('btnRefresh').addEventListener('click', () => { poll(); pollCars(); });
 $('hintClose').addEventListener('click', () => { settings.hintDone = true; saveSettings(); $('hint').hidden = true; });
 $('strip').addEventListener('scroll', () => { $('strip').dataset.scrolled = '1'; }, { passive: true });
 
-// ---------------------------------------------------------------- boot
+// ---------------------------------------------------------------- start
 (async () => {
   const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
   if (!standalone && !settings.hintDone && /iPhone|iPad|Android/i.test(navigator.userAgent)) $('hint').hidden = false;
   try {
     [R, PLAN] = await Promise.all([fetch('route.json', { cache: 'no-store' }).then((r) => r.json()), fetch('plan.json', { cache: 'no-store' }).then((r) => r.json())]);
-  } catch (e) { $('metaLeft').textContent = 'Could not load route.json / plan.json'; return; }
+  } catch (e) { $('metaLeft').textContent = 'Kon route.json / plan.json niet laden'; return; }
   TOTAL = R.official_m; MAT_M = R.mat_m;
   buildMap();
   render();
