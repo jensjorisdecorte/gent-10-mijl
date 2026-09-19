@@ -97,6 +97,9 @@ button{font:inherit;color:inherit}
 .me{width:18px;height:18px;border-radius:50%;background:#1E7BF0;border:3px solid #fff;box-shadow:0 0 0 6px rgba(30,123,240,.25)}
 .dp.drop{height:20px;padding:0 6px;border-radius:5px;background:#0E8C8C;color:#fff;font-weight:700;font-size:11px;display:inline-grid;place-items:center;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35);white-space:nowrap}
 .db{width:9px;height:9px;border-radius:50%;background:#1B6EC2;border:2px solid #fff;box-shadow:0 0 0 1px #1B6EC2}
+.dbig{position:relative;width:26px;height:26px;border-radius:50%;background:#1B6EC2;color:#fff;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.4);display:grid;place-items:center;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:14px}
+.dbig .d{position:absolute;left:50%;top:100%;transform:translate(-50%,3px);background:#161B20;color:#fff;font-size:10px;font-weight:600;padding:1px 5px;border-radius:5px;white-space:nowrap;font-family:"Barlow",sans-serif}
+.fab.busy{opacity:.6}
 .pin{
   width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#fff;border:2px solid #7B4DBE;
   display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.35);
@@ -208,6 +211,7 @@ dialog h3{margin:8px 0 0;font-size:11px;letter-spacing:.08em;text-transform:uppe
   <div id="map" role="application" aria-label="Kaart van het parcours"></div>
   <div class="fabs" id="fabs">
     <button class="fab" id="btnMe" title="Mijn positie" aria-label="Mijn positie tonen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg></button>
+    <button class="fab" id="btnBike" title="Vind een fiets" aria-label="Vind een Dott-fiets in de buurt"><svg viewBox="0 0 24 24"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M5.5 17.5 9 9h6l3.5 8.5M9 9l3 8.5h3M12 17.5 15 9m-3-3h3"/></svg></button>
     <button class="fab" id="btnFit" title="Hele parcours" aria-label="Hele parcours tonen"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     <button class="fab" id="btnSettings" title="Instellingen" aria-label="Instellingen" hidden><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
   </div>
@@ -381,10 +385,44 @@ async function pollDott() {
   try { dott.bikes = (await getJson('https://gbfs.api.ridedott.com/public/v2/ghent/free_bike_status.json')).data.bikes.filter((b) => !b.is_disabled && !b.is_reserved); dott.at = Date.now(); } catch (e) { return; }
   const c = PLAN.stops.find((s) => s.id === PLAN.dott.near.stop).ll;
   layers.dottBikes.clearLayers();
-  for (const b of dott.bikes) if (hav(c[0], c[1], b.lat, b.lon) < 700)
+  const me = bikeFind.from || mePos;
+  for (const b of dott.bikes) if (hav(c[0], c[1], b.lat, b.lon) < 700 || (me && hav(me.lat, me.lon, b.lat, b.lon) < 700))
     L.marker([b.lat, b.lon], { icon: L.divIcon({ className: '', iconSize: [9, 9], iconAnchor: [4, 4], html: '<div class="db"></div>' }) }).bindPopup(`Dott-fiets · batterij ${Math.round((b.current_fuel_percent || 0) * 100)}%`).addTo(layers.dottBikes);
 }
 function dottCount(ll, radius) { return dott.bikes.filter((b) => hav(ll[0], ll[1], b.lat, b.lon) < radius).length; }
+// "Vind een fiets": drie dichtstbijzijnde beschikbare Dott-fietsen vanaf de huidige positie
+const bikeFind = { on: false, targets: [], from: null };
+function getPosition() {
+  return new Promise((res, rej) => {
+    if (mePos && Date.now() - (mePos.at || 0) < 30000) return res(mePos);
+    if (!navigator.geolocation) return rej(new Error('geen locatie'));
+    navigator.geolocation.getCurrentPosition((p) => res({ lat: p.coords.latitude, lon: p.coords.longitude, acc: p.coords.accuracy, at: Date.now() }), (e) => rej(e), { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 });
+  });
+}
+async function findBike() {
+  const btn = $('btnBike');
+  if (bikeFind.on) { bikeFind.on = false; bikeFind.targets = []; layers.bikeFind.clearLayers(); btn.classList.remove('on'); render(); return; }
+  btn.classList.add('busy');
+  try {
+    const pos = await getPosition();
+    await pollDott();
+    const near = dott.bikes.map((b) => ({ b, d: hav(pos.lat, pos.lon, b.lat, b.lon) })).sort((x, y) => x.d - y.d).slice(0, 3);
+    bikeFind.on = true; bikeFind.from = pos; bikeFind.targets = near;
+    layers.bikeFind.clearLayers();
+    L.marker([pos.lat, pos.lon], { icon: L.divIcon({ className: '', iconSize: [18, 18], iconAnchor: [9, 9], html: '<div class="me"></div>' }), zIndexOffset: 900 }).addTo(layers.bikeFind);
+    const pts = [[pos.lat, pos.lon]];
+    near.forEach((t, i) => {
+      L.polyline([[pos.lat, pos.lon], [t.b.lat, t.b.lon]], { color: '#1B6EC2', weight: 2, opacity: .6, dashArray: '3 5' }).addTo(layers.bikeFind);
+      L.marker([t.b.lat, t.b.lon], { icon: L.divIcon({ className: '', iconSize: [26, 26], iconAnchor: [13, 13], html: `<div class="dbig">${i + 1}<span class="d">${Math.round(t.d)} m · ${Math.round((t.b.current_fuel_percent || 0) * 100)}%</span></div>` }), zIndexOffset: 1200 })
+        .bindPopup(`Dott-fiets ${i + 1} · ${Math.round(t.d)} m · batterij ${Math.round((t.b.current_fuel_percent || 0) * 100)}%`).addTo(layers.bikeFind);
+      pts.push([t.b.lat, t.b.lon]);
+    });
+    followBib = null; btn.classList.add('on');
+    if (pts.length > 1) map.fitBounds(L.latLngBounds(pts), { padding: [40, 40], maxZoom: 17 }); else map.setView([pos.lat, pos.lon], 16);
+    render();
+  } catch (e) { alert('Locatie niet beschikbaar. Sta locatietoegang toe voor deze app in de instellingen van je telefoon.'); }
+  btn.classList.remove('busy');
+}
 
 // ---------------------------------------------------------------- loopstermodel
 // Fasen: waiting (voor de start), starting (schot gevallen, nog geen startchip), running, finished.
@@ -517,7 +555,7 @@ function nextViewArrive(stops, i) { for (let k = i; k < stops.length; k++) if (s
 function walkTo(stops, i) { let ms = 0; for (let k = i; k < stops.length && stops[k].kind !== 'view'; k++) ms += (stops[k].legOut ? stops[k].legOut.min * 60000 : 0); return ms; }
 
 // ---------------------------------------------------------------- kaart
-let map, layers = { runners: {}, bands: {}, me: null, pins: {}, legs: null, groups: null, dott: null, dottBikes: null }, meWatch = null, mePos = null, followBib = null;
+let map, layers = { runners: {}, bands: {}, me: null, pins: {}, legs: null, groups: null, dott: null, dottBikes: null, bikeFind: null }, meWatch = null, mePos = null, followBib = null;
 function buildMap() {
   map = L.map('map', { zoomControl: false, attributionControl: true });
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
@@ -542,7 +580,7 @@ function buildMap() {
   layers.me = L.layerGroup().addTo(map);
   layers.groups = L.layerGroup().addTo(map);
   // Dott-parkeervakken: ophalen aan Casinoplein, afzetten aan de P+R bij de aankomst
-  layers.dott = L.layerGroup().addTo(map); layers.dottBikes = L.layerGroup().addTo(map);
+  layers.dott = L.layerGroup().addTo(map); layers.dottBikes = L.layerGroup().addTo(map); layers.bikeFind = L.layerGroup().addTo(map);
   if (PLAN.dott) {
     for (const d of PLAN.dott.dropoff) L.marker(d.ll, { icon: L.divIcon({ className: '', iconSize: [92, 20], iconAnchor: [10, 10], html: '<div class="dp drop">Dott afzetten</div>' }) }).bindPopup(`<b>${d.name}</b>`).addTo(layers.dott);
     if (PLAN.dott.bike_line) L.polyline(PLAN.dott.bike_line, { color: '#1B6EC2', weight: 3, opacity: .8, dashArray: '6 6' }).bindPopup('Fietsroute Casinoplein → Watersportbaan-oost, kruist het parcours niet').addTo(layers.dott);
@@ -580,7 +618,7 @@ function toggleMe() {
   if (!navigator.geolocation) { alert('Geen toegang tot locatie op dit toestel.'); return; }
   btn.classList.add('on');
   meWatch = navigator.geolocation.watchPosition((p) => {
-    mePos = { lat: p.coords.latitude, lon: p.coords.longitude, acc: p.coords.accuracy };
+    mePos = { lat: p.coords.latitude, lon: p.coords.longitude, acc: p.coords.accuracy, at: Date.now() };
     layers.me.clearLayers();
     L.marker([mePos.lat, mePos.lon], { icon: L.divIcon({ className: '', iconSize: [18, 18], iconAnchor: [9, 9], html: '<div class="me"></div>' }), zIndexOffset: 900 }).addTo(layers.me);
     if (followBib === 'me') map.panTo([mePos.lat, mePos.lon]);
@@ -664,6 +702,9 @@ function render() {
   } else if (st.kind === 'view') {
     html += `<div class="next">Laatste stop · medaille, AA-drink en reep voorbij de lijn.</div>`;
   }
+  if (bikeFind.on) {
+    html += `<div class="note">Dichtste Dott-fietsen: ${bikeFind.targets.length ? bikeFind.targets.map((t, i) => `<b>${i + 1}</b> ${Math.round(t.d)} m`).join(' · ') : 'geen beschikbaar'} · open de Dott-app om te ontgrendelen.</div>`;
+  }
   if (PLAN.dott && st.id === PLAN.dott.near.stop) {
     const n = dott.at ? dottCount(st.ll, PLAN.dott.near.radius_m) : null;
     html += `<div class="note">Dott: ${n == null ? 'beschikbaarheid laden…' : `<b>${n}</b> fiets${n === 1 ? '' : 'en'} binnen ${PLAN.dott.near.radius_m} m`} · ${PLAN.dott.bike_min.toFixed(0)} min fietsen + ${PLAN.dott.walk_after_min.toFixed(0)} min langs het water = ${(PLAN.dott.bike_min + PLAN.dott.walk_after_min).toFixed(0)} min i.p.v. ${PLAN.dott.walk_min.toFixed(0)} min stappen.</div>`;
@@ -738,6 +779,7 @@ $('chooserForm').addEventListener('submit', () => {
 });
 $('btnFit').addEventListener('click', () => { followBib = null; map.fitBounds(L.latLngBounds(R.track.map((p) => [p[0], p[1]])), { padding: [20, 20] }); });
 $('btnMe').addEventListener('click', toggleMe);
+$('btnBike').addEventListener('click', findBike);
 $('live').addEventListener('click', () => { poll(); });
 $('hintClose').addEventListener('click', () => { settings.hintDone = true; saveSettings(); $('hint').hidden = true; });
 $('strip').addEventListener('scroll', () => { $('strip').dataset.scrolled = '1'; }, { passive: true });
