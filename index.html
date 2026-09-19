@@ -95,8 +95,7 @@ button{font:inherit;color:inherit}
 .poi.finish{background:repeating-conic-gradient(#161B20 0 25%,#fff 0 50%) 50%/8px 8px;color:transparent;border-color:#161B20}
 .kmm{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:11px;color:#fff;background:rgba(22,27,32,.7);padding:1px 5px;border-radius:4px;white-space:nowrap}
 .me{width:18px;height:18px;border-radius:50%;background:#1E7BF0;border:3px solid #fff;box-shadow:0 0 0 6px rgba(30,123,240,.25)}
-.dp{width:18px;height:18px;border-radius:4px;background:#1B6EC2;color:#fff;font-weight:700;font-size:11px;display:grid;place-items:center;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35)}
-.dp.drop{background:#0E8C8C}
+.dp.drop{height:20px;padding:0 6px;border-radius:5px;background:#0E8C8C;color:#fff;font-weight:700;font-size:11px;display:inline-grid;place-items:center;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35);white-space:nowrap}
 .db{width:9px;height:9px;border-radius:50%;background:#1B6EC2;border:2px solid #fff;box-shadow:0 0 0 1px #1B6EC2}
 .pin{
   width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#fff;border:2px solid #7B4DBE;
@@ -545,8 +544,7 @@ function buildMap() {
   // Dott-parkeervakken: ophalen aan Casinoplein, afzetten aan de P+R bij de aankomst
   layers.dott = L.layerGroup().addTo(map); layers.dottBikes = L.layerGroup().addTo(map);
   if (PLAN.dott) {
-    for (const d of PLAN.dott.pickup) L.marker(d.ll, { icon: L.divIcon({ className: '', iconSize: [18, 18], iconAnchor: [9, 9], html: '<div class="dp">P</div>' }) }).bindPopup(`<b>${d.name}</b><br>Ophalen · 6 min fietsen naar Watersportbaan-oost, dan 10 min te voet`).addTo(layers.dott);
-    for (const d of PLAN.dott.dropoff) L.marker(d.ll, { icon: L.divIcon({ className: '', iconSize: [18, 18], iconAnchor: [9, 9], html: '<div class="dp drop">P</div>' }) }).bindPopup(`<b>${d.name}</b><br>Afzetten (verplicht parkeervak)`).addTo(layers.dott);
+    for (const d of PLAN.dott.dropoff) L.marker(d.ll, { icon: L.divIcon({ className: '', iconSize: [92, 20], iconAnchor: [10, 10], html: '<div class="dp drop">Dott afzetten</div>' }) }).bindPopup(`<b>${d.name}</b>`).addTo(layers.dott);
     if (PLAN.dott.bike_line) L.polyline(PLAN.dott.bike_line, { color: '#1B6EC2', weight: 3, opacity: .8, dashArray: '6 6' }).bindPopup('Fietsroute Casinoplein → Watersportbaan-oost, kruist het parcours niet').addTo(layers.dott);
   }
   for (const r of CFG.runners) {
