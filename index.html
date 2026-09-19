@@ -59,16 +59,15 @@ button{font:inherit;color:inherit}
 /* ---- top bar ---- */
 .bar{
   flex:0 0 auto; display:flex; align-items:center; gap:12px;
-  padding:calc(env(safe-area-inset-top,0px) + 8px) 16px 8px;
+  padding:calc(env(safe-area-inset-top,0px) + 6px) 16px 6px;
   background:#161B20; color:#F5F7F9;
 }
-.bar .eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#AEB7C0;white-space:nowrap}
 .bar .clock{
-  font-family:"Barlow Condensed","Arial Narrow",sans-serif; font-weight:700; font-size:30px; line-height:1;
+  font-family:"Barlow Condensed","Arial Narrow",sans-serif; font-weight:700; font-size:28px; line-height:1;
   font-variant-numeric:tabular-nums; letter-spacing:.01em; margin-left:auto; white-space:nowrap;
 }
 .bar .clock small{font-size:13px;font-weight:600;color:#AEB7C0;margin-right:6px;letter-spacing:.04em}
-.live{display:flex;align-items:center;gap:6px;font-size:12px;color:#AEB7C0;white-space:nowrap}
+.live{display:flex;align-items:center;gap:6px;font-size:12px;color:#AEB7C0;white-space:nowrap;background:none;border:0;padding:0;cursor:pointer}
 .live i{width:8px;height:8px;border-radius:50%;background:#7B8794;display:inline-block}
 .live.ok i{background:#2E9E5B;box-shadow:0 0 0 3px rgba(46,158,91,.25)}
 .live.err i{background:#D14343}
@@ -123,8 +122,8 @@ button{font:inherit;color:inherit}
 /* ---- bottom sheet ---- */
 .sheet{
   flex:0 0 auto; background:var(--panel); border-top:1px solid var(--line);
-  padding:8px 0 calc(env(safe-area-inset-bottom,0px) + 8px);
-  display:flex;flex-direction:column;gap:8px; box-shadow:0 -6px 24px rgba(16,24,32,.08);
+  padding:6px 0 calc(env(safe-area-inset-bottom,0px) + 6px);
+  display:flex;flex-direction:column;gap:6px; box-shadow:0 -6px 24px rgba(16,24,32,.08);
 }
 .sheet > *{margin-inline:16px}
 .strip{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 16px;margin-inline:0}
@@ -140,26 +139,32 @@ button{font:inherit;color:inherit}
 .stop.cur i{background:rgba(255,255,255,.25)}
 .stop.done{opacity:.55}
 .stop:focus-visible{outline:2px solid var(--ch);outline-offset:2px}
-.now{border-radius:12px;background:var(--panel-2);padding:8px 12px;display:grid;gap:3px;border-left:5px solid #7B4DBE}
+.now{border-radius:12px;background:var(--panel-2);padding:6px 10px;display:grid;gap:2px;border-left:5px solid #7B4DBE}
 .now .h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.now .h .auto{margin-left:auto}
 .now .h b{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:20px;line-height:1.1}
 .now .h span{font-size:12px;color:var(--ink-3)}
 .now .pass{display:flex;gap:14px;flex-wrap:wrap;font-variant-numeric:tabular-nums;font-size:14px}
 .now .pass em{font-style:normal;font-weight:600}
 .now .pass .E{color:var(--em)} .now .pass .C{color:var(--ch)}
 .now .next{font-size:13px;color:var(--ink-2)}
+.now .next .arr{color:var(--ink-3);margin:0 4px}
 .now .next b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
 .now .warn{font-size:12px;color:var(--warn);font-weight:500}
 .now .note{font-size:12px;color:var(--ink-3)}
-.now .auto{font-size:11px;color:var(--ch);background:none;border:0;padding:0;cursor:pointer;font-weight:600;justify-self:start}
+.now .auto{font-size:12px;color:var(--ch);background:none;border:0;padding:0;cursor:pointer;font-weight:600}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 @media (max-width:360px){.tiles{grid-template-columns:1fr}}
 .tile{
   display:grid;grid-template-columns:1fr auto;gap:0 8px;align-items:center;min-width:0;
-  padding:6px 8px 6px 8px;border-radius:10px;background:var(--panel-2);border-left:5px solid var(--c);cursor:pointer;
+  padding:5px 8px;border-radius:10px;background:var(--panel-2);border-left:5px solid var(--c);cursor:pointer;
 }
 .tile:focus-visible{outline:2px solid var(--c);outline-offset:2px}
-.tile .name{font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tile .name{font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden}
+.tile .name .st{width:9px;height:9px;border-radius:50%;background:var(--c);flex:0 0 auto}
+.tile .name .st.proj{background:transparent;border:2px dashed var(--c)}
+.tile .name .st.hold{background:var(--warn)}
+.tile .name .st.done{background:var(--ink)}
 .tile .name .bibn{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;color:var(--ink-3);font-size:13px}
 .chip{font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;border-radius:999px;background:var(--panel);border:1px solid var(--line);color:var(--ink-2)}
 .chip.meas{background:var(--ok);border-color:var(--ok);color:#fff}
@@ -172,8 +177,6 @@ button{font:inherit;color:inherit}
 .tile .right .big{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:20px;line-height:1}
 .tile .right .lbl{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .tile .note{grid-column:1/-1;font-size:11px;color:var(--warn);margin-top:2px;white-space:normal}
-.meta{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
-.meta button{background:none;border:0;padding:0;color:var(--ch);font-size:11px;font-weight:600;cursor:pointer}
 .hint{font-size:12px;background:var(--em-soft);color:var(--ink);padding:8px 12px;border-radius:10px;display:flex;gap:10px;align-items:center}
 .hint button{margin-left:auto;background:none;border:0;font-weight:600;color:var(--em);cursor:pointer}
 
@@ -199,10 +202,7 @@ dialog h3{margin:8px 0 0;font-size:11px;letter-spacing:.08em;text-transform:uppe
 <body>
 <div id="app">
   <header class="bar">
-    <div>
-      <div class="eyebrow">MAES Gent 10 Mijl · 20 sep 2026</div>
-      <div class="live" id="live"><i></i><span id="liveText">verbinden…</span></div>
-    </div>
+    <button class="live" id="live" type="button" title="Nu vernieuwen"><i></i><span id="liveText">verbinden…</span></button>
     <div class="clock" id="clock"><small>START</small>10:45</div>
   </header>
 
@@ -220,7 +220,6 @@ dialog h3{margin:8px 0 0;font-size:11px;letter-spacing:.08em;text-transform:uppe
     <div class="strip" id="strip"></div>
     <div class="now" id="now"></div>
     <div class="tiles" id="tiles"></div>
-    <div class="meta"><span id="metaLeft">Parcours laden…</span><button id="btnRefresh" type="button">Nu vernieuwen</button></div>
   </section>
 
   <dialog id="settings">
@@ -521,6 +520,7 @@ function buildMap() {
   }
   map.fitBounds(L.latLngBounds(line), { padding: [20, 20] });
   map.on('dragstart', () => { followBib = null; });
+  map.on('zoomend', () => render());
 }
 function pinIcon(i, cls) { const s = cls === 'cur' ? 34 : 28; return L.divIcon({ className: '', iconSize: [s, s], iconAnchor: [s * .15, s * .95], html: `<div class="pin ${cls}"><span>${i + 1}</span></div>` }); }
 function runnerIcon(r, mode, isLive, dx = 0, tagUp = false) {
@@ -578,7 +578,8 @@ function render() {
 
   // Samenvallende stippen (zelfde plek op het parcours) uit elkaar schuiven zodat beide zichtbaar blijven.
   const lls = states.map((s) => llAtM(s.distM));
-  const together = states.length === 2 && hav(lls[0][0], lls[0][1], lls[1][0], lls[1][1]) < 60;
+  const pts = lls.map((ll) => map.latLngToContainerPoint(ll));
+  const together = states.length === 2 && pts[0].distanceTo(pts[1]) < 44;   // in schermpixels, dus ook uitgezoomd
   states.forEach((s, i) => {
     const r = s.r, mode = s.source === 'measured' ? 'meas' : 'proj', ll = lls[i];
     const dx = together ? (i === 0 ? -19 : 19) : 0;
@@ -592,7 +593,7 @@ function render() {
   pm.stops.forEach((st, i) => {
     const el = document.createElement('button'); el.type = 'button';
     el.className = 'stop' + (i === pm.cur ? ' cur' : st.done ? ' done' : '');
-    const when = st.kind === 'view' ? fmtClock(st.first) : st.leaveBy != null ? `vertrek ${fmtClock(st.leaveBy)}` : '';
+    const when = st.kind === 'view' ? fmtClock(st.first) : st.leaveBy != null ? `↗ ${fmtClock(st.leaveBy)}` : '';
     el.innerHTML = `<i>${i + 1}</i>${st.short}${when ? ` <b>${when}</b>` : ''}`;
     el.addEventListener('click', () => { settings.manualStop = i; saveSettings(); followBib = null; map.setView(st.ll, Math.max(map.getZoom(), 15)); render(); });
     stripEl.appendChild(el);
@@ -600,60 +601,56 @@ function render() {
   const curEl = stripEl.children[pm.cur]; if (curEl && !stripEl.dataset.scrolled) curEl.scrollIntoView({ inline: 'center', block: 'nearest' });
 
   const st = pm.stops[pm.cur], next = pm.stops[pm.cur + 1];
-  let html = `<div class="h"><b>${pm.cur + 1}. ${st.name}</b>${st.kind === 'view' ? `<span>parcours km ${km(st.view_m)}</span>` : ''}</div>`;
+  const autoBtn = settings.manualStop != null ? `<button class="auto" type="button" id="btnAuto">auto</button>` : '';
+  let html = `<div class="h"><b>${pm.cur + 1}. ${st.name}</b>${st.kind === 'view' ? `<span>km ${km(st.view_m)}</span>` : ''}${autoBtn}</div>`;
   if (st.kind === 'view') {
     html += `<div class="pass">` + st.pass.map((p, i) => {
-      const r = CFG.runners[i];
-      return `<span class="${r.key}"><em>${r.name}</em> ${p.passed ? 'gepasseerd ~' : '~'}${fmtClock(p.t)}${!p.passed && p.t > now ? ` <small>(${fmtIn(p.t - now)})</small>` : ''}${p.kind === 'projected' && !p.passed ? '*' : ''}</span>`;
+      const r = CFG.runners[i], soon = !p.passed && p.t > now && p.t - now < 3600000 ? ` <small>(${fmtIn(p.t - now).replace('over ', '')})</small>` : '';
+      return `<span class="${r.key}"><em>${r.name}</em> ${p.passed ? '✓ ' : ''}${fmtClock(p.t)}${p.kind === 'projected' && !p.passed ? '*' : ''}${soon}</span>`;
     }).join('') + `</div>`;
-    if (!st.done) html += `<div class="next">Wees hier tegen <b>${fmtClock(st.arriveBy)}</b>${st.pass.some((p) => p.kind === 'projected' && !p.passed) ? ' · * geschat op basis van het geplande tempo' : ''}</div>`;
   } else if (st.id === 'park') {
-    const w = PLAN.runners_walk;
-    html += `<div class="next">Startschot om <b>10:45</b> · startvakken open vanaf 09:30 · zij wandelen <b>${w.min.toFixed(0)} min</b> (${w.m} m) naar de start op de Strandlaan.</div>`;
+    html += `<div class="next">Schot <b>10:45</b> · zij stappen <b>${PLAN.runners_walk.min.toFixed(0)} min</b> naar de start.</div>`;
   }
   if (next) {
-    const leg = st.legOut;
-    const walk = leg ? `wandel <b>${leg.min.toFixed(0)} min</b> (${leg.m} m) naar ${next.name}` : `ga naar ${next.name}`;
-    const target = next.kind === 'view' ? `ze passeren ~<b>${fmtClock(next.first)}</b>` : '';
-    html += `<div class="next">Daarna: ${walk}${target ? ', ' + target : ''}. Vertrek hier tegen <b>${fmtClock(st.leaveBy)}</b>${st.leaveBy - now > 0 ? ` (${fmtIn(st.leaveBy - now)})` : ' · <b>nu</b>'}.</div>`;
+    const leg = st.legOut, here = st.kind === 'view' && !st.done ? `Hier tegen <b>${fmtClock(st.arriveBy)}</b><span class="arr">→</span>` : '';
+    const target = next.kind === 'view' ? ` (~${fmtClock(next.first)})` : '';
+    html += `<div class="next">${here}vertrek <b>${fmtClock(st.leaveBy)}</b>${st.leaveBy - now <= 0 ? ' · <b>nu</b>' : ''} · ${leg ? leg.min.toFixed(0) + ' min' : ''} naar ${next.short}${target}</div>`;
     if (st.kind === 'view' && st.slack != null) {
       const m = Math.round(st.slack / 60000);
-      if (m < 0) html += `<div class="warn">Krap: om ${next.short} te halen zou je ${-m} min moeten vertrekken vóór de laatste zus hier passeert. Vertrek zodra de tweede voorbij is, of sla een stop over.</div>`;
-      else if (m < 4) html += `<div class="warn">Nog maar ${m} min speling nadat de tweede zus passeert. Vertrek meteen.</div>`;
+      if (m < 0) html += `<div class="warn">Krap (${-m} min tekort): vertrek zodra de tweede voorbij is.</div>`;
+      else if (m < 4) html += `<div class="warn">Maar ${m} min speling: vertrek meteen na de tweede.</div>`;
     }
   } else if (st.kind === 'view') {
-    html += `<div class="next">Laatste stop. Wacht hen op voorbij de finish voor de medaille, AA-drink en proteïnereep.</div>`;
+    html += `<div class="next">Laatste stop · medaille, AA-drink en reep voorbij de lijn.</div>`;
   }
   if (mePos) {
     const dHere = hav(mePos.lat, mePos.lon, st.ll[0], st.ll[1]);
     html += `<div class="note">Je bent ${dHere < 1000 ? Math.round(dHere) + ' m' : km(dHere) + ' km'} van deze stop.</div>`;
-  } else if (!html.includes('class="warn"')) html += `<div class="note">${st.note}</div>`;
-  if (settings.manualStop != null) html += `<button class="auto" type="button" id="btnAuto">Terug naar automatische stopkeuze</button>`;
+  }
   $('now').innerHTML = html;
-  const ba = $('btnAuto'); if (ba) ba.addEventListener('click', () => { settings.manualStop = null; saveSettings(); render(); });
+  const ba = $('btnAuto'); if (ba) ba.addEventListener('click', (e) => { e.stopPropagation(); settings.manualStop = null; saveSettings(); render(); });
 
   const tiles = $('tiles'); tiles.innerHTML = '';
   for (const s of states) {
     const r = s.r;
-    let chip, main, big, lbl;
-    if (s.phase === 'waiting') { chip = '<span class="chip">Voor de start</span>'; main = `Gepland ${fmtPace(s.pace)} · finish ~${fmtClock(s.assumedStart + s.pace * TOTAL / 1000)}`; big = '10:45'; lbl = 'startschot'; }
-    else if (s.phase === 'starting') { chip = '<span class="chip">Aan het starten</span>'; main = `Wachten op de startchip (+${settings.startDelay} min verondersteld)`; big = fmtDur(s.now - CFG.gunMs); lbl = 'sinds het schot'; }
-    else if (s.phase === 'finished') { chip = '<span class="chip done">Gefinisht</span>'; main = `${fmtPace(s.pace)}${s.pos && s.pos !== '-' ? ` · totaal ${s.pos}` : ''}${s.catRank ? ` · cat. ${s.catRank}` : ''}`; big = fmtDur(s.finishTime); lbl = 'chiptijd'; }
+    let dot, main, big, lbl;
+    if (s.phase === 'waiting') { dot = 'proj'; main = `gepland ${fmtPace(s.pace)}`; big = fmtClock(s.assumedStart + s.pace * TOTAL / 1000); lbl = 'finish ~'; }
+    else if (s.phase === 'starting') { dot = 'proj'; main = `wacht op startchip`; big = fmtDur(s.now - CFG.gunMs); lbl = 'sinds schot'; }
+    else if (s.phase === 'finished') { dot = 'done'; main = `${fmtPace(s.pace)}${s.pos && s.pos !== '-' ? ` · ${s.pos}e` : ''}`; big = fmtDur(s.finishTime); lbl = 'chiptijd'; }
     else {
-      chip = s.source === 'measured' ? `<span class="chip meas">gemeten</span>` : s.source === 'implied' ? `<span class="chip hold">${s.held ? 'aan de mat' : 'afgeleid'}</span>` : `<span class="chip proj">${s.startSource === 'assumed' ? 'geschat · start?' : 'geschat'}</span>`;
-      main = `<b>km ${km(s.distM)}</b> · ${fmtPace(s.pace)}` + (s.lastSplit ? ` (mat ${fmtDur(s.lastSplit.Time)} = ${fmtPace(s.avgPace)})` : ` · start ${fmtClock(s.startMs)}${s.startSource === 'assumed' ? '?' : ''}`);
-      big = fmtClock(s.etaFinish); lbl = 'verw. finish';
+      dot = s.source === 'measured' ? 'meas' : s.source === 'implied' ? 'hold' : 'proj';
+      main = `km ${km(s.distM)} · ${fmtPace(s.pace)}${s.source === 'measured' ? '' : s.held ? ' · aan de mat' : '*'}`;
+      big = fmtClock(s.etaFinish); lbl = 'finish ~';
     }
     const notes = s.notes.length ? `<div class="note">${s.notes.join(' · ')}</div>` : '';
     const el = document.createElement('div');
     el.className = 'tile'; el.style.setProperty('--c', r.color); el.tabIndex = 0; el.setAttribute('role', 'button');
-    el.innerHTML = `<div style="min-width:0"><div class="name">${r.name} <span class="bibn">${r.bib}</span></div><div class="name">${chip}</div><div class="main">${main}</div></div><div class="right"><div class="big">${big}</div><div class="lbl">${lbl}</div></div>${notes}`;
+    el.innerHTML = `<div style="min-width:0"><div class="name"><span class="st ${dot}"></span>${r.name}</div><div class="main">${main}</div></div><div class="right"><div class="big">${big}</div><div class="lbl">${lbl}</div></div>${notes}`;
     el.addEventListener('click', () => { followBib = r.bib; map.setView(llAtM(s.distM), Math.max(map.getZoom(), 15)); });
     el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); } });
     tiles.appendChild(el);
   }
 
-  $('metaLeft').textContent = settings.simOn ? `Simulatie · enkel geplande tempo's` : `ACN/Chronorace · ${CFG.table} elke ${CFG.pollMs / 1000} s${serverOffset ? ` · klok ${serverOffset > 0 ? '+' : ''}${Math.round(serverOffset / 1000)} s` : ''}`;
 }
 
 // ---------------------------------------------------------------- instellingen
@@ -677,7 +674,7 @@ $('settingsForm').addEventListener('submit', () => {
 $('btnSettings').addEventListener('click', openSettings);
 $('btnFit').addEventListener('click', () => { followBib = null; map.fitBounds(L.latLngBounds(R.track.map((p) => [p[0], p[1]])), { padding: [20, 20] }); });
 $('btnMe').addEventListener('click', toggleMe);
-$('btnRefresh').addEventListener('click', () => { poll(); pollCars(); });
+$('live').addEventListener('click', () => { poll(); pollCars(); });
 $('hintClose').addEventListener('click', () => { settings.hintDone = true; saveSettings(); $('hint').hidden = true; });
 $('strip').addEventListener('scroll', () => { $('strip').dataset.scrolled = '1'; }, { passive: true });
 
@@ -687,7 +684,7 @@ $('strip').addEventListener('scroll', () => { $('strip').dataset.scrolled = '1';
   if (!standalone && !settings.hintDone && /iPhone|iPad|Android/i.test(navigator.userAgent)) $('hint').hidden = false;
   try {
     [R, PLAN] = await Promise.all([fetch('route.json', { cache: 'no-store' }).then((r) => r.json()), fetch('plan.json', { cache: 'no-store' }).then((r) => r.json())]);
-  } catch (e) { $('metaLeft').textContent = 'Kon route.json / plan.json niet laden'; return; }
+  } catch (e) { $('liveText').textContent = 'kon route/plan niet laden'; return; }
   TOTAL = R.official_m; MAT_M = R.mat_m;
   buildMap();
   render();
