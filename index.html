@@ -160,6 +160,8 @@ button{font:inherit;color:inherit}
 .chip.done{background:var(--ink);border-color:var(--ink);color:var(--panel)}
 .tile .main{font-size:11.5px;color:var(--ink-2);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tile .main b{color:var(--ink);font-weight:600}
+.tile .main .okt{color:var(--ok);font-weight:600}
+.tile .main .qt{color:var(--ink-3)}
 .tile .note{grid-column:1/-1;font-size:10.5px;color:var(--warn);margin-top:2px;white-space:normal}
 .hint{font-size:12px;background:var(--em-soft);color:var(--ink);padding:8px 12px;border-radius:10px;display:flex;gap:10px;align-items:center}
 .hint button{margin-left:auto;background:none;border:0;font-weight:600;color:var(--em);cursor:pointer}
@@ -651,7 +653,8 @@ function render() {
     else if (s.phase === 'finished') { dot = 'done'; main = `${fmtPace(s.pace)}${s.pos && s.pos !== '-' ? ` · ${s.pos}e` : ''}`; big = fmtDur(s.finishTime); lbl = 'chiptijd'; }
     else {
       dot = s.source === 'measured' ? 'meas' : s.source === 'implied' ? 'hold' : 'proj';
-      main = `km ${km(s.distM)} · ${fmtPace(s.pace).replace(' /km', '')}${s.source === 'measured' ? '' : s.held ? ' · mat' : '*'}`;
+      const startTag = s.startSource === 'chip' ? `<span class="okt">✓ ${fmtClock(s.startMs)}</span>` : `<span class="qt">~${fmtClock(s.startMs)}</span>`;
+      main = `${startTag} · km ${km(s.distM)} · ${fmtPace(s.pace).replace(' /km', '')}${s.source === 'measured' ? ' ✓' : s.held ? ' · mat' : '*'}`;
       big = fmtClock(s.etaFinish); lbl = 'finish ~';
     }
     const notes = s.notes.length ? `<div class="note">${s.notes.join(' · ')}</div>` : '';
