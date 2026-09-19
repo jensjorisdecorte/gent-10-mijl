@@ -205,7 +205,7 @@ dialog h3{margin:8px 0 0;font-size:11px;letter-spacing:.08em;text-transform:uppe
   <div class="fabs" id="fabs">
     <button class="fab" id="btnMe" title="Mijn positie" aria-label="Mijn positie tonen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg></button>
     <button class="fab" id="btnFit" title="Hele parcours" aria-label="Hele parcours tonen"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
-    <button class="fab" id="btnSettings" title="Instellingen" aria-label="Instellingen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+    <button class="fab" id="btnSettings" title="Instellingen" aria-label="Instellingen" hidden><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
   </div>
   </div>
 
@@ -241,7 +241,7 @@ dialog h3{margin:8px 0 0;font-size:11px;letter-spacing:.08em;text-transform:uppe
       <div class="row"><input type="range" id="simMin" min="-60" max="140" step="1"><span class="unit" id="simLabel">+30 min</span></div>
       <div class="row"><label for="simSpeed">Snelheid van de simulatie</label><select id="simSpeed"><option value="1">1× (echte tijd)</option><option value="10">10×</option><option value="30">30×</option><option value="60">60×</option></select></div>
       <p class="help">De simulatie start op het gekozen moment en loopt dan door aan die snelheid, met alle lopers aan hun geplande tempo. Live data wordt genegeerd. Zet dit uit op de wedstrijddag.</p>
-      <div class="actions"><button class="btn" type="button" id="btnCancel">Annuleren</button><button class="btn primary" type="submit" id="btnSave">Opslaan</button></div>
+      <div class="actions"><button class="btn" type="button" id="btnHide" style="margin-right:auto">Verberg dit menu</button><button class="btn" type="button" id="btnCancel">Annuleren</button><button class="btn primary" type="submit" id="btnSave">Opslaan</button></div>
     </form>
   </dialog>
 </div>
@@ -268,7 +268,7 @@ const CFG = {
     { bib: 937,  name: 'Nicolaas',  key: 'N', color: 'var(--nh)', hex: '#0E8C8C', pace: 350 },   // loopt onder de naam Adriaan Conickx
   ],
 };
-const DEFAULTS = { pace: {}, follow: {}, followChosen: false, startDelay: 6, fadePct: 3, bufferMin: 5, simOn: false, simMin: 30, simSpeed: 30, simStartedAt: 0, hintDone: false, manualStop: null };
+const DEFAULTS = { admin: false, pace: {}, follow: {}, followChosen: false, startDelay: 6, fadePct: 3, bufferMin: 5, simOn: false, simMin: 30, simSpeed: 30, simStartedAt: 0, hintDone: false, manualStop: null };
 let settings = { ...DEFAULTS };
 try { Object.assign(settings, JSON.parse(localStorage.getItem('g10m') || '{}')); } catch (e) {}
 if (settings.paceE) { settings.pace[944] = settings.paceE; delete settings.paceE; }     // oude instellingen overnemen
@@ -686,6 +686,14 @@ $('settingsForm').addEventListener('submit', () => {
   saveSettings(); poll();
 });
 $('btnSettings').addEventListener('click', openSettings);
+// Verborgen beheer: 5 keer snel op de wedstrijdklok tikken maakt het instellingenmenu zichtbaar op dit toestel.
+$('btnSettings').hidden = !settings.admin;
+let taps = [];
+$('clock').addEventListener('click', () => {
+  const t = Date.now(); taps = taps.filter((x) => t - x < 2500); taps.push(t);
+  if (taps.length >= 5) { taps = []; settings.admin = true; saveSettings(); $('btnSettings').hidden = false; openSettings(); }
+});
+$('btnHide').addEventListener('click', () => { settings.admin = false; saveSettings(); $('btnSettings').hidden = true; $('settings').close(); });
 function openChooser() {
   $('chooserRows').innerHTML = CFG.runners.map((r) => `<label class="choice" style="--c:${r.hex}"><input type="checkbox" id="ch_${r.bib}" ${inPlan(r) ? 'checked' : ''}><i></i>${r.name}<small>#${r.bib} · ${fmtPace(paceOf(r) * 1000)}</small></label>`).join('');
   $('chooser').showModal();
