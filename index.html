@@ -95,6 +95,9 @@ button{font:inherit;color:inherit}
 .poi.finish{background:repeating-conic-gradient(#161B20 0 25%,#fff 0 50%) 50%/8px 8px;color:transparent;border-color:#161B20}
 .kmm{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:11px;color:#fff;background:rgba(22,27,32,.7);padding:1px 5px;border-radius:4px;white-space:nowrap}
 .me{width:18px;height:18px;border-radius:50%;background:#1E7BF0;border:3px solid #fff;box-shadow:0 0 0 6px rgba(30,123,240,.25)}
+.dp{width:18px;height:18px;border-radius:4px;background:#1B6EC2;color:#fff;font-weight:700;font-size:11px;display:grid;place-items:center;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.dp.drop{background:#0E8C8C}
+.db{width:9px;height:9px;border-radius:50%;background:#1B6EC2;border:2px solid #fff;box-shadow:0 0 0 1px #1B6EC2}
 .pin{
   width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#fff;border:2px solid #7B4DBE;
   display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.35);
@@ -372,6 +375,18 @@ async function poll() {
   if (ok) { live.lastOk = Date.now(); live.lastErr = null; }
   render();
 }
+// ---------------------------------------------------------------- Dott (live beschikbaarheid)
+const dott = { bikes: [], at: 0 };
+async function pollDott() {
+  if (!PLAN.dott) return;
+  try { dott.bikes = (await getJson('https://gbfs.api.ridedott.com/public/v2/ghent/free_bike_status.json')).data.bikes.filter((b) => !b.is_disabled && !b.is_reserved); dott.at = Date.now(); } catch (e) { return; }
+  const c = PLAN.stops.find((s) => s.id === PLAN.dott.near.stop).ll;
+  layers.dottBikes.clearLayers();
+  for (const b of dott.bikes) if (hav(c[0], c[1], b.lat, b.lon) < 700)
+    L.marker([b.lat, b.lon], { icon: L.divIcon({ className: '', iconSize: [9, 9], iconAnchor: [4, 4], html: '<div class="db"></div>' }) }).bindPopup(`Dott-fiets · batterij ${Math.round((b.current_fuel_percent || 0) * 100)}%`).addTo(layers.dottBikes);
+}
+function dottCount(ll, radius) { return dott.bikes.filter((b) => hav(ll[0], ll[1], b.lat, b.lon) < radius).length; }
+
 // ---------------------------------------------------------------- loopstermodel
 // Fasen: waiting (voor de start), starting (schot gevallen, nog geen startchip), running, finished.
 // Bron van het tempo: planned (instelling), implied (nog geen tussentijd hoewel verwacht), measured (tussentijd van de mat).
@@ -503,7 +518,7 @@ function nextViewArrive(stops, i) { for (let k = i; k < stops.length; k++) if (s
 function walkTo(stops, i) { let ms = 0; for (let k = i; k < stops.length && stops[k].kind !== 'view'; k++) ms += (stops[k].legOut ? stops[k].legOut.min * 60000 : 0); return ms; }
 
 // ---------------------------------------------------------------- kaart
-let map, layers = { runners: {}, bands: {}, me: null, pins: {}, legs: null, groups: null }, meWatch = null, mePos = null, followBib = null;
+let map, layers = { runners: {}, bands: {}, me: null, pins: {}, legs: null, groups: null, dott: null, dottBikes: null }, meWatch = null, mePos = null, followBib = null;
 function buildMap() {
   map = L.map('map', { zoomControl: false, attributionControl: true });
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
@@ -527,6 +542,13 @@ function buildMap() {
   });
   layers.me = L.layerGroup().addTo(map);
   layers.groups = L.layerGroup().addTo(map);
+  // Dott-parkeervakken: ophalen aan Casinoplein, afzetten aan de P+R bij de aankomst
+  layers.dott = L.layerGroup().addTo(map); layers.dottBikes = L.layerGroup().addTo(map);
+  if (PLAN.dott) {
+    for (const d of PLAN.dott.pickup) L.marker(d.ll, { icon: L.divIcon({ className: '', iconSize: [18, 18], iconAnchor: [9, 9], html: '<div class="dp">P</div>' }) }).bindPopup(`<b>${d.name}</b><br>Ophalen · 6 min fietsen naar Watersportbaan-oost, dan 10 min te voet`).addTo(layers.dott);
+    for (const d of PLAN.dott.dropoff) L.marker(d.ll, { icon: L.divIcon({ className: '', iconSize: [18, 18], iconAnchor: [9, 9], html: '<div class="dp drop">P</div>' }) }).bindPopup(`<b>${d.name}</b><br>Afzetten (verplicht parkeervak)`).addTo(layers.dott);
+    if (PLAN.dott.bike_line) L.polyline(PLAN.dott.bike_line, { color: '#1B6EC2', weight: 3, opacity: .8, dashArray: '6 6' }).bindPopup('Fietsroute Casinoplein → Watersportbaan-oost, kruist het parcours niet').addTo(layers.dott);
+  }
   for (const r of CFG.runners) {
     layers.bands[r.bib] = L.polyline([], { color: r.hex, weight: 12, opacity: .3, lineCap: 'round' }).addTo(map);
     layers.runners[r.bib] = L.marker(llAtM(0), { icon: runnerIcon(r, 'proj', false), zIndexOffset: 1000 }).addTo(map);
@@ -644,6 +666,10 @@ function render() {
   } else if (st.kind === 'view') {
     html += `<div class="next">Laatste stop · medaille, AA-drink en reep voorbij de lijn.</div>`;
   }
+  if (PLAN.dott && st.id === PLAN.dott.near.stop) {
+    const n = dott.at ? dottCount(st.ll, PLAN.dott.near.radius_m) : null;
+    html += `<div class="note">Dott: ${n == null ? 'beschikbaarheid laden…' : `<b>${n}</b> fiets${n === 1 ? '' : 'en'} binnen ${PLAN.dott.near.radius_m} m`} · ${PLAN.dott.bike_min.toFixed(0)} min fietsen + ${PLAN.dott.walk_after_min.toFixed(0)} min langs het water = ${(PLAN.dott.bike_min + PLAN.dott.walk_after_min).toFixed(0)} min i.p.v. ${PLAN.dott.walk_min.toFixed(0)} min stappen.</div>`;
+  }
   if (mePos) {
     const dHere = hav(mePos.lat, mePos.lon, st.ll[0], st.ll[1]);
     html += `<div class="note">Je bent ${dHere < 1000 ? Math.round(dHere) + ' m' : km(dHere) + ' km'} van deze stop.</div>`;
@@ -729,8 +755,9 @@ $('strip').addEventListener('scroll', () => { $('strip').dataset.scrolled = '1';
   buildMap();
   render();
   if (!settings.followChosen) openChooser();
-  poll();
+  poll(); pollDott();
   setInterval(poll, CFG.pollMs);
+  setInterval(pollDott, 60000);
   setInterval(render, 1000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
