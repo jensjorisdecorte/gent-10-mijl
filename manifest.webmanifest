@@ -1,0 +1,15 @@
+{
+  "name": "Gent 10 Mijl · Emilie & Charlotte",
+  "short_name": "10 Mijl",
+  "description": "Follow Emilie and Charlotte Wittamer live on the MAES Gent 10 Mijl 2026 course.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F2F4F6",
+  "theme_color": "#161B20",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
