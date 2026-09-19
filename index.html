@@ -532,6 +532,13 @@ function buildMap() {
     layers.runners[r.bib] = L.marker(llAtM(0), { icon: runnerIcon(r, 'proj', false), zIndexOffset: 1000 }).addTo(map);
   }
   map.fitBounds(L.latLngBounds(line), { padding: [20, 20] });
+  // Het onderste paneel verandert van hoogte (plan, tegels, waarschuwingen). Leaflet meet zijn kader maar één keer,
+  // dus geven we elke maatwijziging door, anders ligt het 'midden' van de kaart onder het paneel.
+  let firstFit = true;
+  new ResizeObserver(() => {
+    map.invalidateSize({ pan: false });
+    if (firstFit) { firstFit = false; map.fitBounds(L.latLngBounds(line), { padding: [20, 20] }); }
+  }).observe(document.getElementById('map'));
   map.on('dragstart', () => { followBib = null; });
   map.on('zoomend', () => render());
 }
